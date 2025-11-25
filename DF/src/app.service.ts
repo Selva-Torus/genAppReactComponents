@@ -15,7 +15,7 @@ export class AppService implements OnModuleInit{
 
   async onModuleInit() {
     console.log('Application started, calling API...');
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbklkIjoiUGVlckA3ODYiLCJjbGllbnQiOiJDVDAwMyIsInR5cGUiOiJjIiwibG9nVHlwZSI6ImRmcyIsInNpZCI6Ijk3YzQ3MDY1LWIwYTAtNDExYy04NjZlLWE1YTAxZTdlNzY3MCIsImlhdCI6MTc2NDA2MjI5NSwiZXhwIjoxNzY0MDYzNDk1fQ.wZJx-E-OVduIQ-fNjGm1klep2scq2-apuxo8SFpvBNI';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJDVDAwMyIsImxvZ2luSWQiOiJQZWVyQDc4NiIsInNpZCI6Ijk3YzQ3MDY1LWIwYTAtNDExYy04NjZlLWE1YTAxZTdlNzY3MCIsImxvZ1R5cGUiOiJkZnMiLCJ0eXBlIjoiYyIsImlhdCI6MTc2NDA2NDA2MSwiZXhwIjoxNzY0MDY1MjYxfQ.1g63eSAYHpg2-wDlBo5_Q4_NTX4esyu6ZqOn-D8_JYw';
     let preParedData:any=await this.dataPrep(JSON.parse(fs.readFileSync('./swagger.json', 'utf-8')))
     if(Object.keys(preParedData).includes('torusApis'))
     {

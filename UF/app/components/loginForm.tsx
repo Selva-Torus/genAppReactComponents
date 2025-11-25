@@ -54,8 +54,8 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
       if (tenant && formData.email && formData.password) {
         setLoading(true)
 
-        setCookie('cfg_theme','dark')
-        setSelectedTheme('dark')
+        setCookie('cfg_theme','light')
+        setSelectedTheme('light')
         
         const api_signinBody: api_signinDto = {
           client: tenant,

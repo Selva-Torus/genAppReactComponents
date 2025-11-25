@@ -59,21 +59,21 @@
       "fusionAuthAppClientSecret": "tFZPbDTDhHCtOwy8K95ai3IF_U8-SP11XfMgC6gnL7k"
     },
     "tenantAppearancekey": "CK:TGA:FNGK:SETUP:FNK:SF:CATK:TENANT:AFGK:CT003:AFK:PROFILE:AFVK:v1:appearance",
-    "selectedPresetKey": "default",
-    "name": "default",
-    "language": "English",
-    "fontSize": "Small",
+    "selectedPresetKey": "1753097390330",
+    "name": "Oprmatrix",
+    "language": "Arabic",
+    "fontSize": "Large",
     "direction": "LTR",
     "brandColor": "#adffaf",
-    "selectionColor": "#dbdbe1",
-    "hoverColor": "#eff1f5",
+    "selectionColor": "#EC407A",
+    "hoverColor": "#FF5722",
     "borderRadius": "xl",
-    "navigationStyles": "horizontal",
-    "theme": "dark",
+    "navigationStyles": "vertical",
+    "theme": "light",
     "topbarColor": "#ffffff",
     "menubarColor": "#ffffff",
     "layoutMode": "fluid",
-    "sidebarStyle": "",
+    "sidebarStyle": "condensed",
     "mobileAppearance": {
       "brandColors": {
         "primary": "#0736C4"
@@ -113,13 +113,13 @@
         "fontUrl": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       },
       {
-        "label": "Dancing+Script",
-        "fontUrl": "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
+        "label": "RobotoFlex",
+        "fontUrl": "https://fonts.googleapis.com/css2?family=Playwrite+US+Trad+Guides&display=swap"
       }
     ],
-    "text-body-font": "Roboto",
-    "text-header-font": "Roboto",
-    "text-display-font": "Roboto",
+    "text-body-font": "RobotoFlex",
+    "text-header-font": "RobotoFlex",
+    "text-display-font": "RobotoFlex",
     "group-bg-color": "#f5fff5",
     "page-bg-color": "#ffffff"
   },

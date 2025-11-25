@@ -24,7 +24,8 @@ export default function RootLayout({
         <div className=''>
           <LayoutDecider 
             mode='fluid' 
-            navigationStyles='horizontal' 
+            navigationStyles='vertical' 
+            sidebarStyle='condensed'
             >
             <div>
               <main>{children}</main>    
