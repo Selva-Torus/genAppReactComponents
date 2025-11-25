@@ -9,13 +9,13 @@ import { getRouteScreenDetails } from '@/app/utils/assemblerKeys';
 import { Magnifier,Xmark } from '@gravity-ui/icons'
 import { Button, Icon, Modal } from '@gravity-ui/uikit'
 import { eventBus } from '@/app/eventBus';
-import RadioButton  from "./RadioButton";
+import ButtonAddd  from "./ButtonAddd";
 import { useInfoMsg } from "@/app/components/infoMsgHandler";
 import { getCookie } from "@/app/components/cookieMgment";
 import { TotalContext, TotalContextProps } from '@/app/globalContext';
 
 
-const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTableData,checkToAdd,setCheckToAdd,refetch,setRefetch,dropdownData,setDropdownData,encryptionFlagPageData, nodeData, setNodeData,paginationDetails,isFormOpen=false}:any)=> {
+const Groupgroup = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTableData,checkToAdd,setCheckToAdd,refetch,setRefetch,dropdownData,setDropdownData,encryptionFlagPageData, nodeData, setNodeData,paginationDetails,isFormOpen=false}:any)=> {
   const token:string = getCookie('token'); 
   const {refresh, setRefresh} = useContext(TotalContext) as TotalContextProps;
   const {memoryVariables, setMemoryVariables} = useContext(TotalContext) as TotalContextProps;
@@ -37,11 +37,10 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   const securityData:any={
   "Template 1": {
     "allowedControls": [
-      "radiobutton"
+      "addd"
     ],
     "allowedGroups": [
       "canvas",
-      "group",
       "group"
     ],
     "blockedControls": [],
@@ -49,11 +48,10 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   },
   "User": {
     "allowedControls": [
-      "radiobutton"
+      "addd"
     ],
     "allowedGroups": [
       "canvas",
-      "group",
       "group"
     ],
     "blockedControls": [],
@@ -61,11 +59,10 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   },
   "Template 3": {
     "allowedControls": [
-      "radiobutton"
+      "addd"
     ],
     "allowedGroups": [
       "canvas",
-      "group",
       "group"
     ],
     "blockedControls": [],
@@ -75,7 +72,7 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
     "allowedControls": [],
     "allowedGroups": [],
     "blockedControls": [
-      "radiobutton"
+      "addd"
     ],
     "readOnlyControls": []
   }
@@ -91,15 +88,13 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   const [showElementAsPopupOpen, setShowElementAsPopupOpen] = React.useState(false);
  /////////////
    //another screen
-  const {aaf24, setaaf24}= useContext(TotalContext) as TotalContextProps;
-  const {aaf24Props, setaaf24Props}= useContext(TotalContext) as TotalContextProps;
-  const {bc87d, setbc87d}= useContext(TotalContext) as TotalContextProps;
-  const {bc87dProps, setbc87dProps}= useContext(TotalContext) as TotalContextProps;
-  const {02b51, set02b51}= useContext(TotalContext) as TotalContextProps;
+  const {groupaaf24, setgroupaaf24}= useContext(TotalContext) as TotalContextProps;
+  const {groupaaf24Props, setgroupaaf24Props}= useContext(TotalContext) as TotalContextProps;
+  const {addd6f6de, setaddd6f6de}= useContext(TotalContext) as TotalContextProps;
   //////////////
   const [open, setOpen] = React.useState(false);
   async function securityCheck() {
-  const orchestrationData:any = await AxiosService.post("/UF/Orchestration",{key:"CK:CT003:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixUF:AFVK:v1",componentId:"db0d030286b445f4842fdfc798cbc87d",from:"Group",accessProfile:accessProfile},{
+  const orchestrationData:any = await AxiosService.post("/UF/Orchestration",{key:"CK:CT003:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixUF:AFVK:v1",componentId:"02640bc58ee74454a88bcb3c267aaf24",from:"GroupGroup",accessProfile:accessProfile},{
     headers: {
       Authorization: `Bearer ${token}`
     }})
@@ -114,16 +109,14 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   setAllowedComponent(allowedGroups) 
     
   /////////////
-    if(orchestrationData?.data?.readableControls.includes("")){
-      set02b51({...02b51,isDisabled:true});
+    if(orchestrationData?.data?.readableControls.includes("addd")){
+      setaddd6f6de({...addd6f6de,isDisabled:true});
     }
   //////////////
     if (code != '') {
       let codeStates: any = {};
-      codeStates['']  = aaf24,
-      codeStates['set'] = setaaf24,
-      codeStates['']  = bc87d,
-      codeStates['set'] = setbc87d,
+      codeStates['group']  = groupaaf24,
+      codeStates['setgroup'] = setgroupaaf24,
 
     codeExecution(code,codeStates);
     } 
@@ -135,29 +128,29 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
   const handleOnChange=()=>{
 
   }
-  const bc87dRef = useRef<any>(null);
+  const groupaaf24Ref = useRef<any>(null);
   const handleClearSearch = () => {
-    bc87dRef.current?.setSearchParams();
-    bc87dRef.current?.handleSearch({});
+    groupaaf24Ref.current?.setSearchParams();
+    groupaaf24Ref.current?.handleSearch({});
   };
 
   useEffect(() => {    
     securityCheck()   
     handleOnload()
     if (prevRefreshRef.current) {
-      if(!Array.isArray(bc87d) && Object.keys(bc87d)?.length>0)
+      if(!Array.isArray(groupaaf24) && Object.keys(groupaaf24)?.length>0)
       {
-        setbc87d({})
+        setgroupaaf24({})
       }
     }else 
       prevRefreshRef.current= true
-  }, [bc87dProps?.refresh])
+  }, [groupaaf24Props?.refresh])
 
   return (
     <div 
       style={{          
-        gridColumn: '5 / 7',
-        gridRow: '80 / 90',
+        gridColumn: '4 / 10',
+        gridRow: '25 / 157',
         gridAutoRows: '4px',
         columnGap: '0px',
         rowGap: '0px',
@@ -177,9 +170,9 @@ const Group = ({lockedData={},setLockedData,primaryTableData={}, setPrimaryTable
       }}
       className=" rounded-md "
     >
-        {allowedControls.includes("")?<RadioButton  /* 02b51 */  checkToAdd={checkToAdd} setCheckToAdd={setCheckToAdd} encryptionFlagCompData={encryptionFlagCompData}  />: <div></div>}
+        {allowedControls.includes("addd")  ?<ButtonAddd lockedData={lockedData} setLockedData={setLockedData} primaryTableData={primaryTableData} setPrimaryTableData={setPrimaryTableData} checkToAdd={checkToAdd} setCheckToAdd={setCheckToAdd} refetch={refetch} setRefetch={setRefetch} encryptionFlagCompData={encryptionFlagCompData}/>: <div></div>}          
     </div>
  )
 }
 
-export default Group
+export default Groupgroup

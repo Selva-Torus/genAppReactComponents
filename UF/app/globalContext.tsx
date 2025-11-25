@@ -6,50 +6,14 @@ import { RealTheme } from '@gravity-ui/uikit'
 import React from 'react'
 import { getCookie } from './components/cookieMgment'
 export interface TotalContextProps {
-  aaf24: any 
-  setaaf24: React.Dispatch<React.SetStateAction<any>>
-  aaf24Props: any 
-  setaaf24Props: React.Dispatch<React.SetStateAction<any>>
-  bc87d: any 
-  setbc87d: React.Dispatch<React.SetStateAction<any>>
-  bc87dProps: any 
-  setbc87dProps: React.Dispatch<React.SetStateAction<any>>
-  18b45: any,
-  set18b45:React.Dispatch<React.SetStateAction<any>>
-  18b45Props: any 
-  set18b45Props: React.Dispatch<React.SetStateAction<any>>
-  38e1a: any,
-  set38e1a:React.Dispatch<React.SetStateAction<any>>
-  38e1aProps: any 
-  set38e1aProps: React.Dispatch<React.SetStateAction<any>>
+  groupaaf24: any 
+  setgroupaaf24: React.Dispatch<React.SetStateAction<any>>
+  groupaaf24Props: any 
+  setgroupaaf24Props: React.Dispatch<React.SetStateAction<any>>
   addd6f6de: any,
   setaddd6f6de:React.Dispatch<React.SetStateAction<any>>
   addd6f6deProps: any 
   setaddd6f6deProps: React.Dispatch<React.SetStateAction<any>>
-  83aee: any,
-  set83aee:React.Dispatch<React.SetStateAction<any>>
-  83aeeProps: any 
-  set83aeeProps: React.Dispatch<React.SetStateAction<any>>
-  b003a: any,
-  setb003a:React.Dispatch<React.SetStateAction<any>>
-  b003aProps: any 
-  setb003aProps: React.Dispatch<React.SetStateAction<any>>
-  d4690: any,
-  setd4690:React.Dispatch<React.SetStateAction<any>>
-  d4690Props: any 
-  setd4690Props: React.Dispatch<React.SetStateAction<any>>
-  02b51: any,
-  set02b51:React.Dispatch<React.SetStateAction<any>>
-  02b51Props: any 
-  set02b51Props: React.Dispatch<React.SetStateAction<any>>
-  ef801: any,
-  setef801:React.Dispatch<React.SetStateAction<any>>
-  ef801Props: any 
-  setef801Props: React.Dispatch<React.SetStateAction<any>>
-  0db94: any,
-  set0db94:React.Dispatch<React.SetStateAction<any>>
-  0db94Props: any 
-  set0db94Props: React.Dispatch<React.SetStateAction<any>>
 
 ////// screen states 
   oprmatrixuf_v1Props: any 
@@ -99,8 +63,8 @@ export const TotalContext = React.createContext<TotalContextProps | {}>({})
 
 const GlobalContext = ({children} : {children: React.ReactNode}) => {
       //////////
-        const [aaf24, setaaf24 ] = React.useState<any>({}) 
-    const [aaf24Props, setaaf24Props ] = React.useState<any>({
+        const [groupaaf24, setgroupaaf24 ] = React.useState<any>({}) 
+    const [groupaaf24Props, setgroupaaf24Props ] = React.useState<any>({
       validation:false,
       required:false,
       refetch:false,
@@ -110,31 +74,6 @@ const GlobalContext = ({children} : {children: React.ReactNode}) => {
       isHidden: false,
       selectedIds:[]
       }) 
-        const [bc87d, setbc87d ] = React.useState<any>({}) 
-    const [bc87dProps, setbc87dProps ] = React.useState<any>({
-      validation:false,
-      required:false,
-      refetch:false,
-      refresh:false,
-      isDisabled: false,
-      presetValues: '',
-      isHidden: false,
-      selectedIds:[]
-      }) 
-   const [18b45,set18b45] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [38e1a,set38e1a] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
    const [addd6f6de,setaddd6f6de] = React.useState<any>({
     isDisabled: false,
     presetValues: '',
@@ -142,60 +81,9 @@ const GlobalContext = ({children} : {children: React.ReactNode}) => {
     refetch:false,
     refresh:false,
     }) 
-   const [83aee,set83aee] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [b003a,setb003a] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [d4690,setd4690] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [02b51,set02b51] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [ef801,setef801] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
-   const [0db94,set0db94] = React.useState<any>({
-    isDisabled: false,
-    presetValues: '',
-    isHidden: false,
-    refetch:false,
-    refresh:false,
-    }) 
     ///////////
-    const [refresh, setRefresh] = React.useState<any>({       qrcode18b45:false,
-       timeline38e1a:false,
-       buttonAddd6f6de:false,
-       barchart83aee:false,
-       datepickerb003a:false,
-       companycardd4690:false,
-       radiobutton02b51:false,
-       textareaef801:false,
-       checkbox0db94:false,
-       groupaaf24:false,
-       groupbc87d:false,
+    const [refresh, setRefresh] = React.useState<any>({       buttonAddd6f6de:false,
+       groupgroupaaf24:false,
       })
 
   ////// screen states 
@@ -229,32 +117,12 @@ const GlobalContext = ({children} : {children: React.ReactNode}) => {
       value={
       {
       //
-        aaf24, 
-        setaaf24,
-        aaf24Props, 
-        setaaf24Props,
-        bc87d, 
-        setbc87d,
-        bc87dProps, 
-        setbc87dProps,
-        18b45,
-        set18b45, 
-        38e1a,
-        set38e1a, 
+        groupaaf24, 
+        setgroupaaf24,
+        groupaaf24Props, 
+        setgroupaaf24Props,
         addd6f6de,
         setaddd6f6de, 
-        83aee,
-        set83aee, 
-        b003a,
-        setb003a, 
-        d4690,
-        setd4690, 
-        02b51,
-        set02b51, 
-        ef801,
-        setef801, 
-        0db94,
-        set0db94, 
         ////// screen states 
           oprmatrixuf_v1Props,
           setoprmatrixuf_v1Props,
