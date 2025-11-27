@@ -7,6 +7,7 @@ import { isLightColor } from '../components/utils'
 import OtpVerification from './OtpVerification'
 import { AxiosService } from '../components/axiosService'
 import { useInfoMsg } from '../components/infoMsgHandler'
+import { Text } from '@/components/Text'
 
 interface Props {
   logo: string
@@ -67,7 +68,7 @@ const ForgotPassword = ({
       ) : (
         <div className='flex h-[550px] w-full flex-col items-center justify-center gap-[20px]'>
           <div className='flex w-full flex-col items-center justify-center gap-[2px]'>
-            <h1 className='text-3xl font-semibold'>Forgot Password?</h1>
+            <Text className='text-3xl font-semibold'>Forgot Password?</Text>
             <p className='text-center text-[12px] opacity-50'>
               No worries, we&apos;ll send you instructions
             </p>

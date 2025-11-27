@@ -8,6 +8,8 @@ import { AxiosService } from '../components/axiosService'
 import { useInfoMsg } from '../components/infoMsgHandler'
 import { BsEyeFill, BsEyeSlash } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
+import { Text } from '@/components/Text'
+import { Button } from '@/components/Button'
 
 interface Props {
   email: string
@@ -146,10 +148,10 @@ const OtpVerification = ({
       {isOtpVerified ? (
         <>
           <div className='flex h-[100px] w-full flex-col items-center justify-center gap-[2px]'>
-            <h1 className='text-3xl font-semibold'>Set New Password</h1>
-            <p className='w-[300px] text-wrap text-center text-[12px] opacity-50'>
+            <Text variant='header-1' className='text-3xl font-semibold'>Set New Password</Text>
+            <Text color='secondary' className='w-[300px] text-wrap text-center text-[12px]'>
               Your new password must be different from previous used passwords
-            </p>
+            </Text>
           </div>
           <div
             className={`flex ${validation ? 'h-[410px] gap-[5px]' : 'h-[350px] gap-[20px]'} w-full flex-col items-center justify-center`}
@@ -181,8 +183,7 @@ const OtpVerification = ({
                     }
                   }}
                 />
-                <button
-                  type='button'
+                <Button
                   onClick={() => setShowPassword(prev => !prev)}
                   className='text-[0.7vw] focus:outline-none'
                 >
@@ -191,7 +192,7 @@ const OtpVerification = ({
                   ) : (
                     <BsEyeSlash className='h-[17px] w-[17px]' />
                   )}
-                </button>
+                </Button>
               </span>
             </label>
 
@@ -301,8 +302,7 @@ const OtpVerification = ({
                     }
                   }}
                 />
-                <button
-                  type='button'
+                <Button
                   onClick={() => setShowConfirmPassword(prev => !prev)}
                   className='text-[0.7vw] focus:outline-none'
                 >
@@ -311,21 +311,17 @@ const OtpVerification = ({
                   ) : (
                     <BsEyeSlash className='h-[17px] w-[17px]' />
                   )}
-                </button>
+                </Button>
               </span>
             </label>
 
-            <button
-              style={{
-                backgroundColor: brandColor,
-                color: isLightColor(brandColor)
-              }}
+            <Button
               className='w-[300px] rounded-full px-[0.83vw] py-[2vh] text-[15px] font-medium'
               onClick={handleFormSubmit}
               disabled={!formData.password || !formData.confirmPassword}
             >
               Set Password
-            </button>
+            </Button>
             <Link
               href='/'
               className='flex items-center gap-[10px] text-[15px] font-medium opacity-50'
@@ -340,10 +336,10 @@ const OtpVerification = ({
       ) : (
         <>
           <div className='flex h-[200px] w-full flex-col items-center justify-center gap-[2px]'>
-            <h1 className='text-3xl font-semibold'>Verification Code</h1>
-            <p className='text-center text-[12px] opacity-50'>
+            <Text variant='body-3' className='text-3xl font-semibold'>Verification Code</Text>
+            <Text color='secondary' className='text-center text-[12px]'>
               We&apos;ve sent a code to {email}
-            </p>
+            </Text>
           </div>
           <div className='flex h-[100px] w-full flex-col items-center justify-center gap-[20px]'>
             <label className='flex w-[300px] flex-col gap-[10px] text-[15px]'>
@@ -369,27 +365,27 @@ const OtpVerification = ({
                 ))}
               </div>
             </label>
-            <button
-              style={{
-                backgroundColor: brandColor,
-                color: isLightColor(brandColor)
-              }}
+            <Button
+              // style={{
+              //   backgroundColor: brandColor,
+              //   color: isLightColor(brandColor)
+              // }}
               className='w-[300px] rounded-full px-[0.83vw] py-[2vh] text-[15px] font-medium'
               onClick={() => handleVerifyOtp()}
               disabled={otp.join('').length !== 6}
             >
               Verify
-            </button>
+            </Button>
             <span className='flex items-center gap-[5px]'>
-              <h6 className='text-[15px] opacity-50'>
+              <Text color='secondary' className='text-[15px]'>
                 Didn&apos;t get a code?
-              </h6>
-              <button
+              </Text>
+              <Button
                 onClick={handleGetOtp}
                 className='text-[15px] font-semibold'
               >
                 Click to resend
-              </button>
+              </Button>
             </span>
             <Link
               href='/'

@@ -3149,7 +3149,7 @@ export class UfService {
       return data.map((profile) => {
         const combinations: any[] = [];
 
-        profile.orgGrp?.forEach((orgGrp: any) => {
+        profile?.orgGrp?.forEach((orgGrp: any) => {
           const { orgGrpCode, orgGrpName } = orgGrp;
 
           orgGrp.org?.forEach((org: any) => {
@@ -3189,7 +3189,7 @@ export class UfService {
         });
 
         return {
-          accessProfile: profile.accessProfile,
+          accessProfile: profile?.accessProfile,
           dap: profile?.dap ? profile?.dap : undefined,
           combinations,
         };

@@ -1,7 +1,6 @@
 'use client'
 import React, { useState,useEffect,useContext, useRef } from 'react';
 import axios from 'axios';
-import {Button,Container,Text ,Icon} from '@gravity-ui/uikit';
 import i18n from '@/app/components/i18n';
 import { codeExecution } from '@/app/utils/codeExecution';
 import { useInfoMsg } from "@/app/components/infoMsgHandler";
@@ -13,7 +12,6 @@ import { getCookie } from '@/app/components/cookieMgment';
 import { nullFilter } from '@/app/utils/nullDataFilter';
 import { eventFunction } from '@/app/utils/eventFunction';
 import { useRouter } from 'next/navigation';
-import {Modal} from '@gravity-ui/uikit';
 import { eventBus } from '@/app/eventBus';
 import TorusButton from '@/app/TorusComponents/Button';
 import TorusIcon from '@/app/TorusComponents/Icon';

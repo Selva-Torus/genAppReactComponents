@@ -14,9 +14,16 @@ interface DatePickerProps {
   tooltipProps?: TooltipPropsType;
   headerText?: string;
   headerPosition?: HeaderPosition;
-  value?: string;
+  value?: string | Date | null;
   onChange?: (date: string) => void;
+  onUpdate?: (date: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   className?: string;
+  label?: string;
+  placeholder?: string;
+  style?: React.CSSProperties;
+  validationState?: "invalid" | undefined;
+  errorMessage?: string;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -29,14 +36,45 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   headerPosition = "top",
   value = "",
   onChange,
+  onUpdate,
+  onBlur,
   className = "",
+  label,
+  placeholder,
+  style,
+  validationState,
+  errorMessage,
 }) => {
   const { theme, direction, branding } = useGlobal();
-  const [dateValue, setDateValue] = useState(value);
+
+  // Convert value to string format for input
+  const getDateString = (val: string | Date | null): string => {
+    if (!val) return "";
+    if (val instanceof Date) {
+      return val.toISOString().split('T')[0];
+    }
+    if (typeof val === 'string') {
+      try {
+        const date = new Date(val);
+        return date.toISOString().split('T')[0];
+      } catch {
+        return val;
+      }
+    }
+    return "";
+  };
+
+  const [dateValue, setDateValue] = useState(getDateString(value));
+
+  // Update internal state when value prop changes
+  React.useEffect(() => {
+    setDateValue(getDateString(value));
+  }, [value]);
 
   const handleChange = (newValue: string) => {
     setDateValue(newValue);
     onChange?.(newValue);
+    onUpdate?.(newValue);
   };
 
   const getSizeClasses = () => {
@@ -58,32 +96,50 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const isDark = theme === "dark" || theme === "dark-hc";
 
   const datePickerElement = (
-    <input
-      type="date"
-      value={dateValue}
-      onChange={(e) => handleChange(e.target.value)}
-      disabled={disabled}
-      readOnly={readOnly}
-      className={`
-        ${getSizeClasses()}
-        ${getBorderRadiusClass(branding.borderRadius)}
-        border-2
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-        ${readOnly ? "cursor-default" : ""}
-        ${isDark ? "bg-gray-800 text-white border-gray-600" : "bg-white text-gray-900 border-gray-300"}
-        transition-colors
-        focus:outline-none
-        ${className}
-      `}
-      onFocus={(e) => {
-        e.currentTarget.style.borderColor = branding.brandColor;
-        e.currentTarget.style.boxShadow = `0 0 0 2px ${branding.brandColor}20`;
-      }}
-      onBlur={(e) => {
-        e.currentTarget.style.borderColor = isDark ? "#4B5563" : "#D1D5DB";
-        e.currentTarget.style.boxShadow = "none";
-      }}
-    />
+    <div className="w-full" style={style}>
+      {label && (
+        <label className={`block mb-2 ${getFontSizeClass(branding.fontSize)} font-medium ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+          {label}
+        </label>
+      )}
+      <input
+        type="date"
+        value={dateValue}
+        onChange={(e) => handleChange(e.target.value)}
+        disabled={disabled}
+        readOnly={readOnly}
+        placeholder={placeholder}
+        className={`
+          w-full
+          ${getSizeClasses()}
+          ${getBorderRadiusClass(branding.borderRadius)}
+          border-2
+          ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+          ${readOnly ? "cursor-default" : ""}
+          ${validationState === "invalid" ? "border-red-500" : isDark ? "border-gray-600" : "border-gray-300"}
+          ${isDark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}
+          transition-colors
+          focus:outline-none
+          ${className}
+        `}
+        onFocus={(e) => {
+          if (validationState !== "invalid") {
+            e.currentTarget.style.borderColor = branding.brandColor;
+            e.currentTarget.style.boxShadow = `0 0 0 2px ${branding.brandColor}20`;
+          }
+        }}
+        onBlur={(e) => {
+          if (validationState !== "invalid") {
+            e.currentTarget.style.borderColor = isDark ? "#4B5563" : "#D1D5DB";
+            e.currentTarget.style.boxShadow = "none";
+          }
+          onBlur?.(e);
+        }}
+      />
+      {validationState === "invalid" && errorMessage && (
+        <div className="mt-1 text-sm text-red-500">{errorMessage}</div>
+      )}
+    </div>
   );
 
   const renderWithHeader = (element: React.ReactNode) => {

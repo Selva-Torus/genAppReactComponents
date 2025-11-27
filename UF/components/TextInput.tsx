@@ -24,6 +24,7 @@ interface TextInputProps {
   view?: TextInputView;
   value?: string;
   note?: string;
+  validationState?: 'valid' | 'invalid';
   errorMessage?: string;
   hasClear?: boolean;
   autoFocus?: boolean;
@@ -32,8 +33,8 @@ interface TextInputProps {
   headerText?: string;
   headerPosition?: HeaderPosition;
   require?: boolean;
-  onChange?: (value: string) => void;
-  onBlur?: (value: string) => void;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
+  onBlur?: React.FocusEventHandler<HTMLInputElement> | undefined
   events?: ComponentEvents[];
   className?: string;
 }
@@ -53,6 +54,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   view = "normal",
   value = "",
   note,
+  validationState,
   errorMessage,
   hasClear = false,
   autoFocus = false,
@@ -62,7 +64,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   headerPosition = "top",
   require = false,
   onChange,
-  onBlur,
+  onBlur=() => {},
   events,
   className = "",
 }) => {
@@ -74,7 +76,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 
   const handleChange = (newValue: string) => {
     setInternalValue(newValue);
-    onChange?.(newValue);
+    // onChange?.(newValue);
 
     // Emit rise events when onChange occurs
     const onChangeEvent = events?.find(e => e.name === "onChange");
@@ -118,7 +120,7 @@ export const TextInput: React.FC<TextInputProps> = ({
                 break;
               case "clearHandler":
                 setInternalValue("");
-                onChange?.("");
+                // onChange?.("");
                 break;
               case "refreshElement":
                 // Refresh could reload value from memory or reset to initial
@@ -140,7 +142,7 @@ export const TextInput: React.FC<TextInputProps> = ({
     return () => {
       unsubscribers.forEach(unsub => unsub());
     };
-  }, [nodeId, events, eventBus, onChange]);
+  }, [nodeId, events, eventBus]);
 
   const getSizeClasses = () => {
     const fontSize = getFontSizeClass(branding.fontSize);
@@ -184,8 +186,10 @@ export const TextInput: React.FC<TextInputProps> = ({
     const isDark = theme === "dark" || theme === "dark-hc";
     const styles: React.CSSProperties = {};
 
-    if (errorMessage) {
+    if (validationState === 'invalid' || errorMessage) {
       styles.borderColor = "#EF4444";
+    } else if (validationState === 'valid') {
+      styles.borderColor = "#10B981";
     } else if (view === "normal") {
       styles.borderColor = isDark ? "#4B5563" : "#D1D5DB";
     } else if (view === "clear") {
@@ -200,9 +204,12 @@ export const TextInput: React.FC<TextInputProps> = ({
   const inputElement = (
     <div className="w-full">
       {label && topContent && (
-        <label className={`block mb-2 ${getFontSizeClass(branding.fontSize)} font-medium ${
-          isDark ? "text-gray-200" : "text-gray-900"
-        }`}>
+        <label
+          className={`block mb-2 ${getFontSizeClass(branding.fontSize)} font-medium ${
+            isDark ? "text-gray-200" : "text-gray-900"
+          }`}
+          style={{ fontFamily: 'var(--font-body)' }}
+        >
           {label}
         </label>
       )}
@@ -218,8 +225,8 @@ export const TextInput: React.FC<TextInputProps> = ({
         
         <input
           type={type}
-          value={internalValue}
-          onChange={(e) => handleChange(e.target.value)}
+          value={value}
+          onChange={onChange}
           placeholder={placeholder}
           disabled={isDisabled}
           readOnly={readOnly}
@@ -239,6 +246,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             ${className}
           `}
           style={{
+            fontFamily: 'var(--font-body)',
             ...getInputStyles(),
             ...(!errorMessage && view === "normal" ? {
               outlineColor: branding.brandColor,
@@ -246,7 +254,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             } : {})
           }}
           onFocus={(e) => {
-            if (!errorMessage) {
+            if (!errorMessage && !validationState) {
               e.currentTarget.style.borderColor = branding.brandColor;
               if (view === "clear") {
                 e.currentTarget.style.boxShadow = "none";
@@ -254,7 +262,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             }
           }}
           onBlur={(e) => {
-            if (!errorMessage) {
+            if (!errorMessage && !validationState) {
               if (view === "clear") {
                 e.currentTarget.style.borderColor = "transparent";
                 e.currentTarget.style.boxShadow = "none";
@@ -262,7 +270,7 @@ export const TextInput: React.FC<TextInputProps> = ({
                 e.currentTarget.style.borderColor = isDark ? "#4B5563" : "#D1D5DB";
               }
             }
-            onBlur?.(internalValue);
+            onBlur(e)
           }}
         />
         
@@ -285,8 +293,8 @@ export const TextInput: React.FC<TextInputProps> = ({
         )}
       </div>
       
-      {(note || errorMessage) && (
-        <div className={`mt-1 text-sm ${errorMessage ? "text-red-500" : isDark ? "text-gray-400" : "text-gray-600"}`}>
+      {(note || errorMessage || validationState === 'invalid') && (
+        <div className={`mt-1 text-sm ${(validationState === 'invalid' || errorMessage) ? "text-red-500" : isDark ? "text-gray-400" : "text-gray-600"}`}>
           {errorMessage || note}
         </div>
       )}

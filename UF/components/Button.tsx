@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, forwardRef } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import { useEventBus } from "@/context/EventBusContext";
 import { Icon } from "@/components/Icon";
@@ -13,18 +13,15 @@ import {
   TooltipProps as TooltipPropsType,
   ComponentEvents,
 } from "@/types/global";
-import { GravityIcon } from "@/types/icons";
-import * as ReactIcons from "react-icons/fa";
 import {
   getFontSizeClass,
   getBorderRadiusClass,
 } from "@/app/utils/branding";
-import { start } from "repl";
 
 type IconDisplay = "Icon only" | "Start with Icon" | "End with Icon";
 
 interface ButtonProps {
-  nodeId: string;
+  nodeId?: any;
   view?: ButtonView;
   size?: ButtonSize;
   icon?: string;
@@ -40,9 +37,11 @@ interface ButtonProps {
   onClick?: () => void;
   onFocus?: () => void;
   events?: ComponentEvents[];
+  className?: string;
+  endContent?: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   nodeId,
   view = "action",
   size = "s",
@@ -59,7 +58,9 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   onFocus,
   events = [],
-}) => {
+  className = "",
+  endContent,
+}, ref) => {
   const { theme, direction, branding } = useGlobal();
   const { emit, subscribe, subscribeGlobal } = useEventBus();
 
@@ -388,6 +389,7 @@ export const Button: React.FC<ButtonProps> = ({
           {textElement && (
             <span className={direction === "RTL" ? "mr-2" : "ml-2"}>{textElement}</span>
           )}
+          {endContent}
         </>
       );
     } else {
@@ -398,6 +400,7 @@ export const Button: React.FC<ButtonProps> = ({
           {iconElement && (
             <span className={direction === "RTL" ? "mr-2" : "ml-2"}>{iconElement}</span>
           )}
+          {endContent}
         </>
       );
     }
@@ -405,6 +408,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const buttonElement = (
     <button
+      ref={ref}
       onClick={handleClick}
       onFocus={handleFocus}
       disabled={disabled}
@@ -417,6 +421,7 @@ export const Button: React.FC<ButtonProps> = ({
         ${getHoverStyles()}
         ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
         ${isRecordLevel ? "relative overflow-hidden" : ""}
+        ${className}
       `}
       dir={direction}
       onMouseEnter={(e) => {
@@ -501,4 +506,6 @@ export const Button: React.FC<ButtonProps> = ({
   }
 
   return <>{finalElement}</>;
-};
+});
+
+Button.displayName = "Button";

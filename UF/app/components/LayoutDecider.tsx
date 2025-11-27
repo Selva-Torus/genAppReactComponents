@@ -12,6 +12,8 @@ import { MenuItem, ScreenDetail } from '../interfaces/interfaces'
 import decodeToken from './decodeToken'
 import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import axios from 'axios'
+import { useGlobal } from '@/context/GlobalContext'
+import { useTheme } from '@/hooks/useTheme'
 const LayoutDecider = ({
   mode = 'detached',
   navigationStyles = 'vertical',
@@ -35,14 +37,12 @@ const LayoutDecider = ({
   const { property, setProperty, userDetails , setUserDetails,encAppFalg , setEncAppFalg } = useContext(
     TotalContext
   ) as TotalContextProps
+   const { branding,  } = useGlobal();
+   const {borderColor} = useTheme()
+   const { brandColor, hoverColor, selectionColor } = branding;
   const encryptionFlagApp: boolean = false;    
   const encryptionDpd: string = "CK:CT003:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixtestdpd:AFVK:v1";
   const encryptionMethod: string = "";
-  const brandColor = property?.brandColor || '#1F2D3D'
-  const hoverColor = property?.hoverColor || '#1F2D3D'
-  const selectionColor = property?.selectionColor || '#1F2D3D'
-  const sidebarColor = property?.menubarColor || '#1F2D3D'
- // const topbarColor = property?.topbarColor || ''
   const logo = ""
   const appName = "oprmatrix"
   const toast = useInfoMsg()
@@ -374,7 +374,6 @@ const LayoutDecider = ({
           selectionColor={selectionColor}
           brandColor={brandColor}
           hoverColor={hoverColor}
-       //   topbarColor={topbarColor}
           appName={appName}
           logo={logo}
           userDetails={userDetails}
@@ -384,8 +383,7 @@ const LayoutDecider = ({
         <div
           className={`cursor-pointer transition-all duration-700 ease-in-out ${getSideNavClassName}`}
           style={{
-            //backgroundColor: `${sidebarColor}`,
-            borderColor: 'var(--g-color-line-generic)'
+            borderColor: borderColor
           }}
         >
           <SideNav
@@ -403,7 +401,7 @@ const LayoutDecider = ({
         <div
           className={`flex-1 overflow-auto ${childrenClassName} pageStyle border`}
           style={{
-            borderColor: 'var(--g-color-line-generic)'
+            borderColor: borderColor
           }}
         >
           {children}

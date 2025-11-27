@@ -2,11 +2,8 @@ import { deleteAllCookies, getCookie } from '@/app/components/cookieMgment'
 import decodeToken from '@/app/components/decodeToken'
 import { Logo } from '@/app/components/Logo'
 import {
-  Avatar,
-  Button,
   DropdownMenu,
   Icon,
-  Text,
   UserLabel
 } from '@gravity-ui/uikit'
 import { usePathname, useRouter } from 'next/navigation'
@@ -15,6 +12,8 @@ import { MenuItem, MenuStructure } from '../interfaces/interfaces'
 import { isLightColor } from './utils'
 import { Ellipsis } from '@gravity-ui/icons'
 import { useGravityThemeClass } from '../utils/useGravityUITheme'
+import { Text } from '@/components/Text'
+import { Button } from '@/components/Button'
 
 const TopNav = ({
   navData,
@@ -180,7 +179,7 @@ const TopNav = ({
         ) : (
           <Logo />
         )}
-        <h3 className='text-center text-nowrap font-bold '>{appName}</h3>
+        <Text className='text-center text-nowrap font-bold '>{appName}</Text>
       </div>
       {listMenuItems && (
         <>
@@ -228,17 +227,17 @@ const TopNav = ({
                     return (
                       <Button
                         view='flat'
-                        style={{
-                          backgroundColor:
-                            routingName == pathname
-                              ? `${brandColor}`
-                              : 'transparent',
-                          color:
-                            routingName == pathname
-                              ? `${isLightColor(brandColor)}`
-                              : 'unset'
-                        }}
-                        className='rounded-full px-2  py-2 '
+                        // style={{
+                        //   backgroundColor:
+                        //     routingName == pathname
+                        //       ? `${brandColor}`
+                        //       : 'transparent',
+                        //   color:
+                        //     routingName == pathname
+                        //       ? `${isLightColor(brandColor)}`
+                        //       : 'unset'
+                        // }}
+                        className='rounded-full px-2 py-2 '
                         key={index}
                         onClick={() => router.push(routingName)}
                       >

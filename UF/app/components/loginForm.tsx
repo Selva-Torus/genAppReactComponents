@@ -8,14 +8,16 @@ import { api_screenRouteDto, api_signinDto } from '../interfaces/interfaces'
 import { useInfoMsg } from '../components/infoMsgHandler'
 import { setCookie } from '../components/cookieMgment'
 import { useRouter } from 'next/navigation'
-import { Button, Icon, Spin, Text } from '@gravity-ui/uikit'
 import { DefaultLoginImage, GitHubIcon, GoogleIcon } from '../utils/svgApplications'
 import { BsEyeFill, BsEyeSlash } from 'react-icons/bs'
 import Link from 'next/link'
 import { TotalContext, TotalContextProps } from '../globalContext'
 import { singleSignOn } from '../utils/serverUtils'
 import decodeToken from './decodeToken'
-import {Shield} from '@gravity-ui/icons';
+import { Text } from '@/components/Text'
+import { Button } from '@/components/Button'
+import { Icon } from '@/components/Icon'
+import Spin from '@/components/Spin'
 interface LoginProps {
   logo?: string
   appName?: string
@@ -266,18 +268,17 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
               onClick={handleFormSubmit}
               size='xl'              
             >
-              {loading ? <Spin size='s' style={{marginTop : "10px"}}/> : 'Login'}
-            </Button>
+              {loading ? <Spin className='flex w-full justify-center' spinning color='success' style='dots' /> : 'Login'}
+            </Button> 
 
             {process.env.NEXT_PUBLIC_NEXT_AUTH_NEEDED === 'true' && (
               <div className='flex w-full'>
                 <Button
                   onClick={() => singleSignOn('fusionauth')}
-                  width='max'
                   size='l'
                   view='raised'
                 >
-                <Icon data={Shield} />
+                <Icon data="FaShieldAlt" />
                   ViaFusionAuth
                 </Button>
               </div>
