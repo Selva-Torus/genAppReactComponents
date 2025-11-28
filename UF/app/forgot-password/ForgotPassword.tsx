@@ -2,12 +2,12 @@
 import React, { useState } from 'react'
 import { ArrowBackward, TorusLogo } from '../utils/svgApplications'
 import Link from 'next/link'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { isLightColor } from '../components/utils'
 import OtpVerification from './OtpVerification'
 import { AxiosService } from '../components/axiosService'
 import { useInfoMsg } from '../components/infoMsgHandler'
 import { Text } from '@/components/Text'
+import { useTheme } from '@/hooks/useTheme'
 
 interface Props {
   logo: string
@@ -22,8 +22,9 @@ const ForgotPassword = ({
 }: Props) => {
   const [formData, setFormData] = useState<Record<string, string>>({email: ''})
   const toast = useInfoMsg()
-  const themeClass = useGravityThemeClass()
   const [isOtpReceive, setIsOtpReceive] = useState(false)
+    const { isDark } = useTheme()
+
 
   const handleGetOtp = async () => {
     try {
@@ -46,7 +47,7 @@ const ForgotPassword = ({
   }
 
   return (
-    <div className={`g-root flex h-screen w-screen flex-col ${themeClass}`}>
+    <div className={`g-root flex h-screen w-screen flex-col`}>
       <div className='flex h-[200px] w-full items-center justify-center text-3xl font-semibold'>
         {logo ? (
           <img
@@ -110,7 +111,7 @@ const ForgotPassword = ({
               className='flex items-center gap-[10px] text-[15px] font-medium opacity-50'
             >
               <ArrowBackward
-                fill={themeClass.includes('dark') ? '#ffffff' : '#000000'}
+                fill={isDark ? '#ffffff' : '#000000'}
               />{' '}
               Back to Login
             </Link>

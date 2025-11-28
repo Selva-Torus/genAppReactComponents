@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { SetupScreenContext, SetupScreenContextType } from './setup'
 import { useInfoMsg } from '@/app/components/infoMsgHandler'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { EditIcon } from './svgApplication'
 import OrgMatrixTreeComponent from './AccessTemplateTable/OrgMatrixTreeComponent'
 import { Text } from '@/components/Text'
@@ -23,7 +22,6 @@ const AccessTemplateTable = ({}) => {
   } = React.useContext(SetupScreenContext) as SetupScreenContextType
   const [currentPage, setCurrentPage] = useState(1)
   const accessTemplatePerPage = 10
-  const themeClass = useGravityThemeClass()
   const { branding } = useGlobal()
   const { borderColor } = useTheme()
   const { brandColor } = branding
@@ -114,7 +112,7 @@ const AccessTemplateTable = ({}) => {
   }
 
   return (
-    <div className={`g-root h-full w-full ${themeClass}`}>
+    <div className={`g-root h-full w-full`}>
       <Text variant='body-2' className='mb-4 text-xl font-bold'>Access Template</Text>
       <div className='h-[73vh] w-full overflow-x-auto'>
         <table className='min-w-full rounded text-left'>
@@ -221,8 +219,7 @@ const AccessTemplateTable = ({}) => {
         page={currentPage}
         pageSize={accessTemplatePerPage}
         total={securityData.length}
-        onUpdate={setCurrentPage}
-        compact={true}
+        onUpdate={(data) => setCurrentPage(data.page)}
       />
     </div>
   )

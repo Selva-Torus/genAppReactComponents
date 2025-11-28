@@ -19,12 +19,6 @@ export type PopupPlacement =
 
 export type PopupSize = "s" | "m" | "l" | "xl";
 
-interface Position {
-  top: number;
-  left: number;
-  placement: PopupPlacement;
-}
-
 interface PopupProps {
   /** Reference to the anchor element */
   anchorRef: React.RefObject<HTMLElement>;
@@ -69,38 +63,59 @@ const sizeClasses = {
   xl: "w-96 max-w-96"
 };
 
-const arrowStyles = {
-  top: "bottom-[-6px] left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-gray-200 dark:border-t-gray-600",
-  "top-start": "bottom-[-6px] left-4 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-gray-200 dark:border-t-gray-600",
-  "top-end": "bottom-[-6px] right-4 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-gray-200 dark:border-t-gray-600",
-  bottom: "top-[-6px] left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-gray-200 dark:border-b-gray-600",
-  "bottom-start": "top-[-6px] left-4 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-gray-200 dark:border-b-gray-600",
-  "bottom-end": "top-[-6px] right-4 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-gray-200 dark:border-b-gray-600",
-  left: "right-[-6px] top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-gray-200 dark:border-l-gray-600",
-  "left-start": "right-[-6px] top-4 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-gray-200 dark:border-l-gray-600",
-  "left-end": "right-[-6px] bottom-4 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-gray-200 dark:border-l-gray-600",
-  right: "left-[-6px] top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-gray-200 dark:border-r-gray-600",
-  "right-start": "left-[-6px] top-4 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-gray-200 dark:border-r-gray-600",
-  "right-end": "left-[-6px] bottom-4 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-gray-200 dark:border-r-gray-600"
+const getArrowClasses = (placement: PopupPlacement, hasArrow: boolean) => {
+  if (!hasArrow) return "";
+  
+  const arrowBase = "absolute w-0 h-0 pointer-events-none";
+  
+  switch (placement) {
+    case "top":
+    case "top-start":
+    case "top-end":
+      return `${arrowBase} top-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-white dark:border-t-gray-800`;
+    
+    case "bottom":
+    case "bottom-start": 
+    case "bottom-end":
+      return `${arrowBase} bottom-full left-1/2 transform -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-white dark:border-b-gray-800`;
+    
+    case "left":
+    case "left-start":
+    case "left-end":
+      return `${arrowBase} left-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-l-white dark:border-l-gray-800`;
+    
+    case "right":
+    case "right-start":
+    case "right-end":
+      return `${arrowBase} right-full top-1/2 transform -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-white dark:border-r-gray-800`;
+    
+    default:
+      return "";
+  }
 };
 
-const calculatePosition = (
-  anchor: HTMLElement,
-  popup: HTMLElement,
+const calculatePopupPosition = (
+  anchorEl: HTMLElement,
+  popupEl: HTMLElement,
   placement: PopupPlacement,
-  offset: number | [number, number]
-): Position => {
-  const anchorRect = anchor.getBoundingClientRect();
-  const popupRect = popup.getBoundingClientRect();
+  offset: number | [number, number],
+  preventFlip: boolean = false
+) => {
+  const anchorRect = anchorEl.getBoundingClientRect();
+  const popupRect = popupEl.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
   const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
   const scrollY = window.pageYOffset || document.documentElement.scrollTop;
   
-  const offsetArray = Array.isArray(offset) ? offset : [offset, offset];
-  const [offsetX, offsetY] = offsetArray;
-
+  const offsetX = Array.isArray(offset) ? offset[0] : offset;
+  const offsetY = Array.isArray(offset) ? offset[1] : offset;
+  
   let top = 0;
   let left = 0;
-
+  let finalPlacement = placement;
+  
+  // Calculate position based on placement
   switch (placement) {
     case "top":
       top = anchorRect.top + scrollY - popupRect.height - offsetY;
@@ -151,8 +166,74 @@ const calculatePosition = (
       left = anchorRect.right + scrollX + offsetX;
       break;
   }
-
-  return { top, left, placement };
+  
+  // Check if we need to flip (only if not prevented)
+  if (!preventFlip) {
+    const popupViewportTop = top - scrollY;
+    const popupViewportLeft = left - scrollX;
+    const popupViewportBottom = popupViewportTop + popupRect.height;
+    const popupViewportRight = popupViewportLeft + popupRect.width;
+    
+    // Flip vertically if needed
+    if (placement.startsWith('top') && popupViewportTop < 0) {
+      const flippedPlacement = placement.replace('top', 'bottom') as PopupPlacement;
+      const flippedTop = anchorRect.bottom + scrollY + offsetY;
+      if (flippedTop - scrollY + popupRect.height <= viewportHeight) {
+        finalPlacement = flippedPlacement;
+        top = flippedTop;
+      }
+    } else if (placement.startsWith('bottom') && popupViewportBottom > viewportHeight) {
+      const flippedPlacement = placement.replace('bottom', 'top') as PopupPlacement;
+      const flippedTop = anchorRect.top + scrollY - popupRect.height - offsetY;
+      if (flippedTop - scrollY >= 0) {
+        finalPlacement = flippedPlacement;
+        top = flippedTop;
+      }
+    }
+    
+    // Flip horizontally if needed
+    if (placement.startsWith('left') && popupViewportLeft < 0) {
+      const flippedPlacement = placement.replace('left', 'right') as PopupPlacement;
+      const flippedLeft = anchorRect.right + scrollX + offsetX;
+      if (flippedLeft - scrollX + popupRect.width <= viewportWidth) {
+        finalPlacement = flippedPlacement;
+        left = flippedLeft;
+        // Recalculate top for right placement
+        if (flippedPlacement === 'right') {
+          top = anchorRect.top + scrollY + (anchorRect.height - popupRect.height) / 2;
+        } else if (flippedPlacement === 'right-start') {
+          top = anchorRect.top + scrollY;
+        } else if (flippedPlacement === 'right-end') {
+          top = anchorRect.bottom + scrollY - popupRect.height;
+        }
+      }
+    } else if (placement.startsWith('right') && popupViewportRight > viewportWidth) {
+      const flippedPlacement = placement.replace('right', 'left') as PopupPlacement;
+      const flippedLeft = anchorRect.left + scrollX - popupRect.width - offsetX;
+      if (flippedLeft - scrollX >= 0) {
+        finalPlacement = flippedPlacement;
+        left = flippedLeft;
+        // Recalculate top for left placement
+        if (flippedPlacement === 'left') {
+          top = anchorRect.top + scrollY + (anchorRect.height - popupRect.height) / 2;
+        } else if (flippedPlacement === 'left-start') {
+          top = anchorRect.top + scrollY;
+        } else if (flippedPlacement === 'left-end') {
+          top = anchorRect.bottom + scrollY - popupRect.height;
+        }
+      }
+    }
+  }
+  
+  // Constrain to viewport
+  const finalLeft = Math.max(8, Math.min(left - scrollX, viewportWidth - popupRect.width - 8)) + scrollX;
+  const finalTop = Math.max(8, Math.min(top - scrollY, viewportHeight - popupRect.height - 8)) + scrollY;
+  
+  return {
+    top: finalTop,
+    left: finalLeft,
+    placement: finalPlacement
+  };
 };
 
 export const Popup: React.FC<PopupProps> = ({
@@ -175,36 +256,8 @@ export const Popup: React.FC<PopupProps> = ({
   id,
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<Position>({ top: 0, left: 0, placement });
+  const [position, setPosition] = useState({ top: 0, left: 0, placement });
   const [isVisible, setIsVisible] = useState(false);
-
-  // Calculate position
-  useLayoutEffect(() => {
-    if (!open || !anchorRef.current || !popupRef.current) return;
-
-    const updatePosition = () => {
-      const newPosition = calculatePosition(
-        anchorRef.current!,
-        popupRef.current!,
-        placement,
-        offset
-      );
-      setPosition(newPosition);
-    };
-
-    // Initial position calculation
-    updatePosition();
-
-    // Update position on scroll and resize
-    const handleUpdate = () => requestAnimationFrame(updatePosition);
-    window.addEventListener("scroll", handleUpdate, true);
-    window.addEventListener("resize", handleUpdate);
-
-    return () => {
-      window.removeEventListener("scroll", handleUpdate, true);
-      window.removeEventListener("resize", handleUpdate);
-    };
-  }, [open, placement, offset, anchorRef]);
 
   // Handle visibility animation
   useEffect(() => {
@@ -215,6 +268,45 @@ export const Popup: React.FC<PopupProps> = ({
       return () => clearTimeout(timer);
     }
   }, [open, animationDuration]);
+
+  // Calculate position
+  useLayoutEffect(() => {
+    if (!open || !isVisible || !anchorRef.current || !popupRef.current) {
+      return;
+    }
+
+    const updatePosition = () => {
+      if (!anchorRef.current || !popupRef.current) return;
+      
+      const newPosition = calculatePopupPosition(
+        anchorRef.current,
+        popupRef.current,
+        placement,
+        offset,
+        preventFlip
+      );
+      
+      setPosition(newPosition);
+    };
+
+    // Initial calculation
+    updatePosition();
+
+    // Handle scroll and resize
+    const handleUpdate = () => {
+      if (open && anchorRef.current && popupRef.current) {
+        updatePosition();
+      }
+    };
+
+    window.addEventListener("scroll", handleUpdate, true);
+    window.addEventListener("resize", handleUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", handleUpdate, true);
+      window.removeEventListener("resize", handleUpdate);
+    };
+  }, [open, isVisible, placement, offset, preventFlip, anchorRef]);
 
   // Handle outside click
   useEffect(() => {
@@ -256,12 +348,12 @@ export const Popup: React.FC<PopupProps> = ({
   if (!isVisible) return null;
 
   const sizeClass = sizeClasses[size];
+  const arrowClasses = getArrowClasses(position.placement, hasArrow);
   
   const popupClassName = [
     "absolute bg-white dark:bg-gray-800",
     "border border-gray-200 dark:border-gray-600",
     "rounded-lg shadow-lg",
-    "overflow-hidden",
     "transition-all duration-200 ease-in-out",
     open ? "opacity-100 scale-100" : "opacity-0 scale-95",
     sizeClass,
@@ -284,15 +376,9 @@ export const Popup: React.FC<PopupProps> = ({
       role="tooltip"
       aria-hidden={!open}
     >
-      {hasArrow && (
-        <div
-          className={`absolute w-0 h-0 ${arrowStyles[position.placement]}`}
-        />
-      )}
-      <div className="relative z-10 bg-white dark:bg-gray-800 rounded-lg">
-        <div className="p-4">
-          {children}
-        </div>
+      {hasArrow && <div className={arrowClasses} />}
+      <div className="relative p-4">
+        {children}
       </div>
     </div>
   );
@@ -304,7 +390,7 @@ export const Popup: React.FC<PopupProps> = ({
   return ReactDOM.createPortal(popupContent, document.body);
 };
 
-// Export a hook for easier popup management
+// Hook for managing popup state
 export const usePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLElement>(null);

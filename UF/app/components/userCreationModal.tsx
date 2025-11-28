@@ -4,7 +4,6 @@ import { AxiosService } from '@/app/components/axiosService'
 import { useInfoMsg } from '@/app/components/infoMsgHandler'
 import { getCookie } from '@/app/components/cookieMgment'
 import { TotalContext, TotalContextProps } from '@/app/globalContext'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/Button'
 import { useTheme } from '@/hooks/useTheme'
@@ -139,7 +138,6 @@ const UserCreationModal = ({
   const ag = process.env.NEXT_PUBLIC_APPGROUPCODE
   const app = process.env.NEXT_PUBLIC_APPCODE
   const toast = useInfoMsg()
-  const themeClass = useGravityThemeClass()
   const { userDetails } = useContext(TotalContext) as TotalContextProps
   const emailDomain = useMemo(() => {
     let domain = '@gmail.com'
@@ -361,7 +359,7 @@ const UserCreationModal = ({
 
   return (
     <div
-      className={`g-root flex flex-col items-center justify-center ${themeClass}`}
+      className={`g-root flex flex-col items-center justify-center`}
     >
       <div className='flex w-full items-center justify-between px-4 py-2'>
         <Text variant='header-1'>{isEdit ? 'Edit User Info' : 'Add User'}</Text>

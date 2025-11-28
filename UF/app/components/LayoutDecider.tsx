@@ -257,7 +257,7 @@ const LayoutDecider = ({
      [user],
      token
     )
-    setUpdatedNavData(processedMenuItems)
+    setUpdatedNavData(processedMenuItems.flatMap(x => [x, x, x]).reverse())
     setLoading(false)
    } else {
     toast('user lack access to any screen', 'danger')

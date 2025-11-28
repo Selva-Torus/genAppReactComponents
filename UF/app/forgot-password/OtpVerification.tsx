@@ -3,13 +3,13 @@ import Link from 'next/link'
 import React, { useRef, useState } from 'react'
 import { ArrowBackward } from '../utils/svgApplications'
 import { isLightColor } from '../components/utils'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { AxiosService } from '../components/axiosService'
 import { useInfoMsg } from '../components/infoMsgHandler'
 import { BsEyeFill, BsEyeSlash } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/Button'
+import { useTheme } from '@/hooks/useTheme'
 
 interface Props {
   email: string
@@ -22,7 +22,6 @@ const OtpVerification = ({
   brandColor = '#76C432',
   setIsOtpReceive
 }: Props) => {
-  const themeClass = useGravityThemeClass()
   const router = useRouter()
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''))
@@ -41,6 +40,8 @@ const OtpVerification = ({
     uppercase: false,
     number: false
   })
+  const { isDark } = useTheme()
+
 
   const handleVerifyOtp = async () => {
     try {
@@ -327,7 +328,7 @@ const OtpVerification = ({
               className='flex items-center gap-[10px] text-[15px] font-medium opacity-50'
             >
               <ArrowBackward
-                fill={themeClass.includes('dark') ? '#ffffff' : '#000000'}
+                fill={isDark ? '#ffffff' : '#000000'}
               />{' '}
               Back to Login
             </Link>
@@ -392,7 +393,7 @@ const OtpVerification = ({
               className='flex items-center gap-[10px] text-[15px] font-medium opacity-50'
             >
               <ArrowBackward
-                fill={themeClass.includes('dark') ? '#ffffff' : '#000000'}
+                fill={isDark ? '#ffffff' : '#000000'}
               />{' '}
               Back to Login
             </Link>

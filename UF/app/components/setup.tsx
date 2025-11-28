@@ -23,7 +23,6 @@ import { isLightColor } from '@/app/components/utils'
 import UserTable from './userTable'
 import AccessTemplateTable from './accessTemplateTable'
 import GeneralSettings from './generalSettings'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { checkDataAccess } from '../utils/checkDAP'
 import OPRMatrix from './OprMatrix'
 import { useGlobal } from '@/context/GlobalContext'
@@ -108,7 +107,6 @@ const SetupScreen = ({
   const tenant = process.env.NEXT_PUBLIC_TENANT_CODE
   const ag = process.env.NEXT_PUBLIC_APPGROUPCODE
   const app = process.env.NEXT_PUBLIC_APPCODE
-  const themeClass = useGravityThemeClass()
   const userManagementAccess = useMemo(
     () => checkDataAccess(getCookie('token')),
     []
@@ -686,7 +684,7 @@ const SetupScreen = ({
           }}
         >
           <div
-            className={`g-root flex h-[90%] w-full flex-col overflow-hidden ${themeClass}`}
+            className={`g-root flex h-[90%] w-full flex-col overflow-hidden`}
           >
             <div className='flex w-2/3 items-center justify-between px-2'>
               <Text variant='header-1' className='text-nowrap'>
