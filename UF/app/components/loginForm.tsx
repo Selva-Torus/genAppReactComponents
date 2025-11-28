@@ -18,15 +18,17 @@ import { Text } from '@/components/Text'
 import { Button } from '@/components/Button'
 import { Icon } from '@/components/Icon'
 import Spin from '@/components/Spin'
+import { useGlobal } from '@/context/GlobalContext'
+import { useTheme } from '@/hooks/useTheme'
+import { twMerge } from 'tailwind-merge'
 interface LoginProps {
   logo?: string
   appName?: string
-  brandColor?: string
   loginType?: 'standard' | 'rightAligned' | 'leftAligned'
   image?: string
 }
 
-const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType = "standard", image }: LoginProps) => {
+const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image }: LoginProps) => {
   const { selectedTheme, setSelectedTheme } = useContext(
     TotalContext
   ) as TotalContextProps
@@ -39,6 +41,9 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
   const baseUrl: any = process.env.NEXT_PUBLIC_API_BASE_URL
   const toast = useInfoMsg()
   const router = useRouter()
+  const {branding} = useGlobal()
+  const {brandColor} = branding
+  const {bgColor, borderColor, textColor} = useTheme()
   const onBoardingKey:string = "User Screen"
   const tenant = process.env.NEXT_PUBLIC_TENANT_CODE
   const [imageandLogoValid, setImageandLogoValid] = useState({
@@ -203,15 +208,15 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
             ) : (
               <Logo />
             )}
-            <Text variant='header-2' color='brand'>
+            <Text variant='header-2' color='positive-heavy'>
               {appName}
             </Text>
-            <Text variant='body-1'>
+            <Text variant='body-3' color='info-heavy'>
               Create an account or log in to explore about our app
             </Text>
           </div>
           <div
-            className={`flex h-fit min-w-[400px] flex-col gap-5 rounded-lg bg-white px-5`}
+            className={twMerge(`flex h-fit min-w-[400px] flex-col gap-5 rounded-lg px-5`, bgColor, borderColor, textColor)}
           >
             <Text variant='header-2' className='py-2'>
               Login
@@ -223,7 +228,7 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
               <input
                 type='text'
                 name='email'
-                className='rounded-full bg-[#F4F5FA] p-3 outline-none'
+                className='rounded-full p-3 outline-none'
                 placeholder='Enter your email'
                 onChange={handleInputChange}
                 onKeyDown={e => {
@@ -240,7 +245,7 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
               <input
                 type={showPassword ? 'text' : 'password'}
                 name='password'
-                className='rounded-full bg-[#F4F5FA] p-3 outline-none'
+                className='rounded-full p-3 outline-none'
                 placeholder='Enter your password'
                 onChange={handleInputChange}
                 onKeyDown={e => {
@@ -261,7 +266,7 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
                 )}
               </button>
             </div>
-            <Link href='/forgot-password' className='text-black/50'>
+            <Link href='/forgot-password'>
               Forgot Password
             </Link>
             <Button
@@ -306,4 +311,4 @@ const Login = ({ logo, appName = "oprmatrix", brandColor = "#adffaf", loginType 
   )
 }
 
-export default Login
+export default LoginForm

@@ -14,16 +14,16 @@ import { ArrowBackward, ArrowForward, StarIcon } from '../utils/svgApplications'
 import { useRouter } from 'next/navigation'
 import decodeToken from '../components/decodeToken'
 import { capitalize } from 'lodash'
-import { TotalContext, TotalContextProps } from '../globalContext'
 import { isLightColor } from '../components/utils'
 import { Text } from '@/components/Text'
 import { Select } from '@/components/Select'
 import Spin from '@/components/Spin'
 import { useGlobal } from '@/context/GlobalContext'
+import { twMerge } from 'tailwind-merge'
+import { useTheme } from '@/hooks/useTheme'
 
 const ContextSelector = () => {
   const [selectedAccessProfile, setSelectedAccessProfile] = useState<string[]>([])
-  const { property } = useContext(TotalContext) as TotalContextProps
   const token: string = getCookie('token')
   const tp_ps: any = getCookie('tp_ps')
   const decodedTokenObj: any = decodeToken(token)
@@ -34,6 +34,7 @@ const ContextSelector = () => {
   const [accessProfiles, setAccessProfiles] = useState<any[]>([])
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const {borderColor, isDark} = useTheme()
   const { branding } = useGlobal()
   const { brandColor } = branding
   const [selectedCombination, setSelectedCombination] = useState({})
@@ -212,24 +213,24 @@ const ContextSelector = () => {
   )
 
   return (
-    <div className='h-[100vh] w-full bg-[#F7F7F7]'>
+    <div className='h-[100vh] w-full'>
       <div className='flex h-[100%] flex-col items-center justify-center gap-[15px]'>
         <Text variant='display-2'>Welcome {capitalize(user)}</Text>
-        <div className='flex items-center gap-[5px] text-[0.83vw] text-black/50'>
+        <div className='flex items-center gap-[5px] text-[0.83vw]'>
           <Text variant='body-1'>{dateString}</Text>
           <hr className='h-[25px] border' />
           <Text variant='body-1'>{time}</Text>
         </div>
         <Text
           variant='display-1'
-          className='text-[0.83vw] font-medium text-black'
+          className='text-[0.83vw] font-medium'
         >
           Select from the profiles to proceed
         </Text>
         <div className='flex w-full justify-center gap-[.5vw]'>
           <div className='relative h-[37px] items-center'>
             <span className='absolute inset-y-0 left-0 flex p-[10px]'>
-              <SearchIcon fill={'#000000'} height='15px' width='15px' />
+              <SearchIcon fill={isDark ? "white" : "black"} height='15px' width='15px' />
             </span>
             <input
               autoFocus
@@ -239,12 +240,6 @@ const ContextSelector = () => {
               onFocus={e => (e.target.style.borderColor = brandColor)}
               onBlur={e => (e.target.style.borderColor = '#00000026')}
               disabled={!selectedAccessProfile[0]}
-              style={{
-                backgroundColor: '#FFFFFF',
-                color: '#000000',
-                fontSize: `0.72vw`,
-                borderColor: '#00000026'
-              }}
               className={`h-[37px] w-[20vw] rounded-md border pl-[30px] font-medium focus:outline-none`}
             />
           </div>
@@ -309,13 +304,13 @@ const ContextSelector = () => {
                         ? `2px solid ${brandColor}`
                         : ''
                     }}
-                    className={`flex h-[240px] w-[260px] flex-col gap-[10px] rounded-md bg-white pl-[10px] pt-[10px] text-start text-white outline-none`}
+                    className={twMerge(`flex h-[240px] w-[260px] flex-col gap-[10px] rounded-md pl-[10px] pt-[10px] text-start outline-none border`, borderColor)}
                     onClick={() => handleCardClick(item)}
                   >
                     <div className='flex w-full items-center justify-between'>
                       <Text
                         variant='body-2'
-                        className='truncate text-nowrap text-[15px] font-semibold text-black'
+                        className='truncate text-nowrap text-[15px] font-semibold'
                         needTooltip={true}
                         tooltipProps={{
                           title: item?.orgGrpName,
@@ -332,8 +327,8 @@ const ContextSelector = () => {
                       </span>
                     </div>
                     <Text
-                      variant='body-2'
-                      className='w-[80%] truncate rounded-md bg-[#F7F8F8] px-[2px] py-[2px] text-[0.72vw] font-medium text-black/50'
+                      variant='body-1'
+                      className={twMerge('w-[80%] truncate rounded-md px-[2px] py-[2px] text-[0.72vw] font-medium border-2', borderColor)}
                       needTooltip={true}
                       tooltipProps={{
                         title: item?.orgName,
@@ -344,7 +339,7 @@ const ContextSelector = () => {
                     </Text>
                     <Text
                       variant='body-2'
-                      className='truncate text-nowrap text-[15px] font-semibold text-black'
+                      className='truncate text-nowrap text-[15px] font-semibold'
                       needTooltip={true}
                       tooltipProps={{
                         title: item?.psGrpName,
@@ -354,8 +349,8 @@ const ContextSelector = () => {
                       {item?.psGrpName}
                     </Text>
                     <Text
-                      variant='body-2'
-                      className='w-[80%] truncate rounded-md bg-[#F7F8F8] px-[2px] py-[5px] text-[0.72vw] font-medium text-black/50'
+                      variant='body-1'
+                      className={twMerge('w-[80%] truncate rounded-md px-[2px] py-[2px] text-[0.72vw] font-medium border-2', borderColor)}
                       needTooltip={true}
                       tooltipProps={{ title:item?.psName, placement:'top-start' }}
                     >
@@ -363,15 +358,15 @@ const ContextSelector = () => {
                     </Text>
                     <Text
                       variant='body-2'
-                      className='truncate text-nowrap text-[15px] font-semibold text-black'
+                      className='truncate text-nowrap text-[15px] font-semibold'
                       needTooltip={true}
                       tooltipProps={{ title:item?.roleGrpName, placement:'top-start' }}
                     >
                       {item?.roleGrpName}
                     </Text>
                     <Text
-                      variant='body-2'
-                      className='w-[80%] truncate rounded-md bg-[#F7F8F8] px-[2px] py-[5px] text-[0.72vw] font-medium text-black/50'
+                      variant='body-1'
+                      className={twMerge('w-[80%] truncate rounded-md px-[2px] py-[2px] text-[0.72vw] font-medium border-2', borderColor)}
                       needTooltip={true}
                       tooltipProps={{ title:item?.roleName, placement:'top-start' }}
                     >
@@ -408,7 +403,7 @@ const ContextSelector = () => {
               onClick={() => router.push(landingScreen)}
               className='flex items-center gap-[10px] outline-none'
             >
-              <ArrowBackward /> Back to Dashboard
+              <ArrowBackward fill={isDark ? "white" : "black"} /> Back to Dashboard
             </button>
           )}
         </div>

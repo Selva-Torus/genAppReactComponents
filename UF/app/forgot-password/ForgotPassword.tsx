@@ -8,23 +8,23 @@ import { AxiosService } from '../components/axiosService'
 import { useInfoMsg } from '../components/infoMsgHandler'
 import { Text } from '@/components/Text'
 import { useTheme } from '@/hooks/useTheme'
+import { useGlobal } from '@/context/GlobalContext'
 
 interface Props {
   logo: string
   appName: string
-  brandColor: string
 }
 
 const ForgotPassword = ({
   logo,
   appName ,
-  brandColor
 }: Props) => {
   const [formData, setFormData] = useState<Record<string, string>>({email: ''})
   const toast = useInfoMsg()
   const [isOtpReceive, setIsOtpReceive] = useState(false)
-    const { isDark } = useTheme()
-
+  const { isDark } = useTheme()
+  const {branding} = useGlobal()
+  const {brandColor} = branding
 
   const handleGetOtp = async () => {
     try {
@@ -69,10 +69,10 @@ const ForgotPassword = ({
       ) : (
         <div className='flex h-[550px] w-full flex-col items-center justify-center gap-[20px]'>
           <div className='flex w-full flex-col items-center justify-center gap-[2px]'>
-            <Text className='text-3xl font-semibold'>Forgot Password?</Text>
-            <p className='text-center text-[12px] opacity-50'>
+            <Text variant='header-1' className='text-3xl font-semibold'>Forgot Password?</Text>
+            <Text color='secondary'>
               No worries, we&apos;ll send you instructions
-            </p>
+            </Text>
           </div>
           <>
             <label className='flex w-[300px] flex-col gap-[10px] text-[15px]'>
@@ -82,11 +82,6 @@ const ForgotPassword = ({
                 name='email'
                 className='rounded-full border px-[0.83vw] py-[2vh] text-[15px] font-medium outline-none'
                 placeholder='Enter your email'
-                style={{
-                  backgroundColor: 'var(--g-color-base-float)',
-                  color: 'var(--g-color-text-primary)',
-                  borderColor: 'var(--g-color-line-generic)'
-                }}
                 onChange={handleInputChange}
                 //   onKeyDown={e => {
                 //     if (e.key === 'Enter') {

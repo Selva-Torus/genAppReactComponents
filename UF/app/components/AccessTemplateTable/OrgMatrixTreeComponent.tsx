@@ -187,7 +187,7 @@ const OrgMatrixTreeComponent = () => {
     <div className='flex h-full w-full flex-col gap-[1vh]'>
       <div className='flex flex-col'>
         <div className='flex w-full items-center justify-between'>
-          <div className='text-torus-text-opacity-50 flex items-center gap-[.8vw]'>
+          <div className='flex items-center gap-[.8vw]'>
             <Text
               variant='body-3'
               color='secondary'
@@ -198,16 +198,18 @@ const OrgMatrixTreeComponent = () => {
             <Text variant='header-2' color='primary'>
               {'>'}
             </Text>
+            <div className='w-[10vw]'>
+              <TextInput
+                size='s'
+                type='text'
+                onChange={handleInputChange}
+                value={templateToBeUpdated?.accessProfile}
+                readOnly={templateToBeUpdated?.['no.ofusers'] !== 0}
+                view='clear'
+              />
+            </div>
           </div>
-          <TextInput
-            size='s'
-            type='text'
-            onChange={handleInputChange}
-            value={templateToBeUpdated?.accessProfile}
-            readOnly={templateToBeUpdated?.['no.ofusers'] !== 0}
-            view='clear'
-            className='flex w-[9.7vw]'
-          />
+
           {/* <input
               className={'text-torus-text bg-torus-bg outline-none'}
               type='text'

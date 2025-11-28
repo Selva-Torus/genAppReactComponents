@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   DarkHCTheme,
   DarkTheme,
@@ -8,8 +8,6 @@ import {
 import { fetchAMDKey } from '../utils/fetchAMDKey.api'
 import { getCookie, setCookie } from './cookieMgment'
 import { getLanguagesJson } from '../utils/getLanguagesJson.api'
-import { TotalContext, TotalContextProps } from '../globalContext'
-import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import { useGlobal } from '@/context/GlobalContext'
 import { useTheme } from '@/hooks/useTheme'
 import { Select } from '@/components/Select'
@@ -21,12 +19,8 @@ const GeneralSettings = () => {
     getCookie('cfg_lang')
   ])
   const token = getCookie('token')
-  const { selectedTheme, setSelectedTheme } = useContext(
-    TotalContext
-  ) as TotalContextProps
-  const themeClass = useGravityThemeClass()
   const { branding } = useGlobal()
-  const { borderColor } = useTheme()
+  const { borderColor, theme, setTheme } = useTheme()
   const { brandColor } = branding
 
   const themeOptions = [
@@ -75,12 +69,12 @@ const GeneralSettings = () => {
   }
 
   const handleThemeChange = (value: any) => {
-    setSelectedTheme(value)
+    setTheme(value)
     setCookie('cfg_theme', value)
   }
 
   return (
-    <div className={`g-root h-full w-full ${themeClass} overflow-auto`}>
+    <div className={`g-root h-full w-full overflow-auto`}>
       <div className='flex w-full items-center justify-between'>
         <div className='flex flex-col gap-2'>
           <Text variant='header-1'>General</Text>
@@ -112,14 +106,14 @@ const GeneralSettings = () => {
                 className={`relative rounded-md rounded-tl-xl outline-none`}
                 style={{
                   border:
-                    selectedTheme == val.code
+                    theme == val.code
                       ? `4px solid ${brandColor}`
                       : 'none'
                 }}
               >
                 {val.icon}
                 <div className='absolute bottom-3 right-4'>
-                  {selectedTheme === val.code && (
+                  {theme === val.code && (
                     <input
                       type='checkbox'
                       readOnly

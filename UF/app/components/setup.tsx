@@ -31,6 +31,7 @@ import { Text } from '@/components/Text'
 import { Modal } from '@/components/Modal'
 import { Button } from '@/components/Button'
 import { Menu } from '@/components/Menu'
+import { twMerge } from 'tailwind-merge'
 
 type SettingTabs = 'org' | 'st' | 'user' | 'general'
 
@@ -710,11 +711,7 @@ const SetupScreen = ({
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     placeholder={'Search'}
-                    style={{
-                      backgroundColor: bgColor,
-                      color: textColor
-                    }}
-                    className='px-2 py-1.5 outline-none'
+                    className={twMerge('px-2 py-1.5 outline-none', bgColor)}
                   />
                 </div>
                 <div className=' flex items-center'>

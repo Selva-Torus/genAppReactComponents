@@ -8,7 +8,7 @@ import { TotalContext, TotalContextProps } from '../globalContext'
 import { AxiosService } from './axiosService'
 import { deleteAllCookies, getCookie } from './cookieMgment'
 import { useInfoMsg } from './infoMsgHandler'
-import { MenuItem, ScreenDetail } from '../interfaces/interfaces'
+import { MenuItem } from '../interfaces/interfaces'
 import decodeToken from './decodeToken'
 import { useGravityThemeClass } from '../utils/useGravityUITheme'
 import axios from 'axios'
@@ -34,12 +34,10 @@ const LayoutDecider = ({
   const [fullView, setFullView] = useState(
     sidebarStyle == 'default' || sidebarStyle == 'condensed' ? true : false
   )
-  const { property, setProperty, userDetails , setUserDetails,encAppFalg , setEncAppFalg } = useContext(
-    TotalContext
-  ) as TotalContextProps
-   const { branding,  } = useGlobal();
-   const {borderColor} = useTheme()
-   const { brandColor, hoverColor, selectionColor } = branding;
+  const {userDetails, setUserDetails } = useContext(TotalContext) as TotalContextProps
+  const { branding,  } = useGlobal();
+  const {borderColor} = useTheme()
+  const { brandColor, hoverColor, selectionColor } = branding;
   const encryptionFlagApp: boolean = false;    
   const encryptionDpd: string = "CK:CT003:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixtestdpd:AFVK:v1";
   const encryptionMethod: string = "";
@@ -257,7 +255,7 @@ const LayoutDecider = ({
      [user],
      token
     )
-    setUpdatedNavData(processedMenuItems.flatMap(x => [x, x, x]).reverse())
+    setUpdatedNavData(processedMenuItems)
     setLoading(false)
    } else {
     toast('user lack access to any screen', 'danger')
