@@ -1,11 +1,5 @@
 'use client'
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
+import React, { useCallback,useContext, useEffect, useMemo, useState } from 'react'
 import { SearchIcon } from '../components/svgApplication'
 import { useInfoMsg } from '@/app/components/infoMsgHandler'
 import axios from 'axios'
@@ -21,6 +15,7 @@ import Spin from '@/components/Spin'
 import { useGlobal } from '@/context/GlobalContext'
 import { twMerge } from 'tailwind-merge'
 import { useTheme } from '@/hooks/useTheme'
+import { Dropdown } from '@/components/Dropdown'
 
 const ContextSelector = () => {
   const [selectedAccessProfile, setSelectedAccessProfile] = useState<string[]>([])
@@ -28,41 +23,43 @@ const ContextSelector = () => {
   const tp_ps: any = getCookie('tp_ps')
   const decodedTokenObj: any = decodeToken(token)
   const user = decodedTokenObj?.loginId
-  const toast = useInfoMsg()
+  const toast = useInfoMsg();
   const baseUrl: any = process.env.NEXT_PUBLIC_API_BASE_URL
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [accessProfiles, setAccessProfiles] = useState<any[]>([])
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(false)
   const {borderColor, isDark} = useTheme()
   const { branding } = useGlobal()
   const { brandColor } = branding
   const [selectedCombination, setSelectedCombination] = useState({})
   const [time, setTime] = useState('')
-  let landingScreen: string = 'User Screen'
+  let landingScreen:string = 'CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1';
   let screenDetails: any = {
-    keys: [
-      {
-        screensName: 'testroute-v1',
-        ufKey:
-          'CK:CT003:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixUF:AFVK:v1'
-      }
-    ]
+           keys:[
+  {
+    "screensName": "screen-v1",
+    "ufKey": "CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1"
+  },
+  {
+    "screensName": "report-v1",
+    "ufKey": "CK:CT293:FNGK:AF:FNK:UF-UFR:CATK:AG001:AFGK:A001:AFK:report:AFVK:v1"
+  }
+]
   }
   screenDetails = screenDetails.keys
 
   if (landingScreen === 'User Screen') {
     landingScreen = 'user'
-  } else if (landingScreen === 'Logs Screen') {
+  }else if (landingScreen === 'Logs Screen') {
     landingScreen = 'logs'
-  } else {
-    screenDetails.forEach((screen: any) => {
+  }else{
+    screenDetails.forEach((screen: any)   => {
       if (landingScreen === screen.ufKey) {
         landingScreen = screen.screensName
       }
-    })
-    landingScreen =
-      landingScreen.split('-')[0] + '_' + landingScreen.split('-').at(-1)
+    });
+    landingScreen =landingScreen.split('-')[0]+'_'+landingScreen.split('-').at(-1)
   }
 
   useEffect(() => {
@@ -221,16 +218,17 @@ const ContextSelector = () => {
           <hr className='h-[25px] border' />
           <Text variant='body-1'>{time}</Text>
         </div>
-        <Text
-          variant='display-1'
-          className='text-[0.83vw] font-medium'
-        >
+        <Text variant='body-1' className=' font-medium'>
           Select from the profiles to proceed
         </Text>
         <div className='flex w-full justify-center gap-[.5vw]'>
-          <div className='relative h-[37px] items-center'>
+             <div className='relative h-[42px] items-center'>
             <span className='absolute inset-y-0 left-0 flex p-[10px]'>
-              <SearchIcon fill={isDark ? "white" : "black"} height='15px' width='15px' />
+              <SearchIcon
+                fill={isDark ? 'white' : 'black'}
+                height='17px'
+                width='17px'
+              />
             </span>
             <input
               autoFocus
@@ -240,11 +238,11 @@ const ContextSelector = () => {
               onFocus={e => (e.target.style.borderColor = brandColor)}
               onBlur={e => (e.target.style.borderColor = '#00000026')}
               disabled={!selectedAccessProfile[0]}
-              className={`h-[37px] w-[20vw] rounded-md border pl-[30px] font-medium focus:outline-none`}
+              className={`h-[42px] w-[20vw] rounded-md border pl-[30px] font-medium focus:outline-none`}
             />
           </div>
           <div className='w-[10vw]'>
-            <Select
+           {/* <Select
               options={accessProfiles.map(item => ({
                 value: item.accessProfile,
                 label: item.accessProfile
@@ -256,24 +254,16 @@ const ContextSelector = () => {
               }}
               size='s'
               placeholder='Select Access Profile'
-            />
-            {/* <Select
-              value={selectedAccessProfile}
-              onUpdate={data => {
-                setSelectedAccessProfile(data)
+            />*/}
+            <Dropdown
+              value={selectedAccessProfile[0]}
+              staticProps={accessProfiles.map(item => item.accessProfile)}
+              className=''
+              onChange={val => {
+                setSelectedAccessProfile([val] as string[])
                 setSelectedCombination({})
               }}
-              width={'max'}
-              size='l'
-              placeholder='Select Access Profile'
-              className='w-full'
-            >
-              {accessProfiles.map((item, index) => (
-                <Select.Option key={index} value={item.accessProfile}>
-                  {item.accessProfile}
-                </Select.Option>
-              ))}
-            </Select> */}
+            />
           </div>
         </div>
 

@@ -16,7 +16,7 @@ import { TbCopyCheckFilled } from "react-icons/tb";
 import { twMerge } from 'tailwind-merge'
 import { useTheme } from '@/hooks/useTheme'
 import { useGlobal } from '@/context/GlobalContext'
-
+import { Spin } from '@/components/Spin'
 interface TableHeaderProps {
   loading: boolean
   jsonData: {
@@ -427,15 +427,9 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 wordWrap={false}
                 edgePadding={true}
               // verticalAlign='middle'
-              // emptyMessage={loading ? 'Loading...' : 'No data found'}
+              emptyMessage={loading ? <Spin spinning style='dots' /> : 'No data found'}
               />
-              {
-                loading && (
-                  <div className='flex w-full items-center justify-center'>
-                    Loading ...
-                  </div>
-                )
-              }
+
             </div>
             <div
               className={`${activeTab === 'torus' ? 'block w-1/2 md:w-1/4 ' : 'hidden'

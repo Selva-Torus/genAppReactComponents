@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { Theme, Language, Direction, GlobalProps, Branding } from "@/types/global";
+import { Theme, Language, Direction, GlobalProps, Branding, Typography } from "@/types/global";
 
 interface GlobalContextType extends GlobalProps {
   setTheme: (theme: Theme) => void;
@@ -9,6 +9,8 @@ interface GlobalContextType extends GlobalProps {
   setDirection: (direction: Direction) => void;
   setBranding: (branding: Branding) => void;
   updateBranding: (updates: Partial<Branding>) => void;
+  setTypography: (typography: Typography) => void;
+  updateTypography: (updates: Partial<Typography>) => void;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -42,7 +44,15 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   const [language, setLanguage] = useState<Language>("English");
-  const [direction, setDirection] = useState<Direction>("LTR");
+
+  // Initialize direction from cookie or default to "LTR"
+  const [direction, setDirectionState] = useState<Direction>(() => {
+    if (typeof window !== 'undefined') {
+      const savedDirection = getCookie('cfg_direction');
+      return (savedDirection as Direction) || "LTR";
+    }
+    return "LTR";
+  });
   const [branding, setBrandingState] = useState<Branding>({
     fontSize: "Medium",
     brandColor: "#00BFFF",
@@ -51,10 +61,22 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
     borderRadius: "s",
   });
 
+  const [typography, setTypographyState] = useState<Typography>({
+    bodyFont: "Roboto",
+    headerFont: "Roboto",
+    displayFont: "Roboto",
+  });
+
   // Wrapper to save theme to cookie when it changes
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     setCookie('cfg_theme', newTheme);
+  };
+
+  // Wrapper to save direction to cookie when it changes
+  const setDirection = (newDirection: Direction) => {
+    setDirectionState(newDirection);
+    setCookie('cfg_direction', newDirection);
   };
 
   const setBranding = (newBranding: Branding) => {
@@ -65,6 +87,21 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
     setBrandingState((prev) => ({ ...prev, ...updates }));
   };
 
+  const setTypography = (newTypography: Typography) => {
+    setTypographyState(newTypography);
+  };
+
+  const updateTypography = (updates: Partial<Typography>) => {
+    setTypographyState((prev) => ({ ...prev, ...updates }));
+  };
+
+  // Apply direction to document element
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.dir = direction.toLowerCase();
+    }
+  }, [direction]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -72,11 +109,14 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
         language,
         direction,
         branding,
+        typography,
         setTheme,
         setLanguage,
         setDirection,
         setBranding,
         updateBranding,
+        setTypography,
+        updateTypography,
       }}
     >
       {children}
@@ -91,3 +131,4 @@ export const useGlobal = () => {
   }
   return context;
 };
+ 

@@ -4,6 +4,12 @@ export type Direction = "LTR" | "RTL";
 export type FontSize = "Small" | "Medium" | "Large" | "Extra Large";
 export type BorderRadiusSize = "xs" | "s" | "m" | "l" | "xl" | "none";
 
+export interface Typography {
+  bodyFont: string;
+  headerFont: string;
+  displayFont: string;
+}
+
 export interface Branding {
   fontSize: FontSize;
   brandColor: string;
@@ -17,6 +23,7 @@ export interface GlobalProps {
   language: Language;
   direction: Direction;
   branding: Branding;
+  typography: Typography;
 }
 
 export type ButtonView =

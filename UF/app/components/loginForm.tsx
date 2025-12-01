@@ -28,10 +28,7 @@ interface LoginProps {
   image?: string
 }
 
-const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image }: LoginProps) => {
-  const { selectedTheme, setSelectedTheme } = useContext(
-    TotalContext
-  ) as TotalContextProps
+const LoginForm = ({ logo, appName = "application", loginType = "standard", image }: LoginProps) => {
   const [formData, setFormData] = useState<Record<string, string>>({
     email: '',
     password: ''
@@ -44,7 +41,7 @@ const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image 
   const {branding} = useGlobal()
   const {brandColor} = branding
   const {bgColor, borderColor, textColor} = useTheme()
-  const onBoardingKey:string = "User Screen"
+  const onBoardingKey:string = "CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1"
   const tenant = process.env.NEXT_PUBLIC_TENANT_CODE
   const [imageandLogoValid, setImageandLogoValid] = useState({
     image: image ? true : false,
@@ -61,14 +58,13 @@ const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image 
       if (tenant && formData.email && formData.password) {
         setLoading(true)
 
-        setCookie('cfg_theme','light')
-        setSelectedTheme('light')
+        setCookie('cfg_theme','dark')
         
         const api_signinBody: api_signinDto = {
           client: tenant,
           username: formData.email,
           password: formData.password,
-          key: "CK:TGA:FNGK:BLDC:FNK:DEV:CATK:CT003:AFGK:AG001:AFK:oprmatrix:AFVK:v1:bldc",
+          key: "CK:TGA:FNGK:BLDC:FNK:DEV:CATK:CT293:AFGK:AG001:AFK:A001:AFVK:v1:bldc",
           ufClientType: 'UFW'
         }
         const api_signin = await axios.post(
@@ -98,8 +94,12 @@ const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image 
           let screenDetails: any = {
             keys:[
   {
-    "screensName": "testroute-v1",
-    "ufKey": "CK:CT003:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixUF:AFVK:v1"
+    "screensName": "screen-v1",
+    "ufKey": "CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1"
+  },
+  {
+    "screensName": "report-v1",
+    "ufKey": "CK:CT293:FNGK:AF:FNK:UF-UFR:CATK:AG001:AFGK:A001:AFK:report:AFVK:v1"
   }
 ]
           }
@@ -290,7 +290,7 @@ const LoginForm = ({ logo, appName = "oprmatrix", loginType = "standard", image 
             )}
 
             <div className='flex justify-center'>
-              <Text>
+              <Text className='flex gap-1 text-nowrap items-center'>
                 Don&apos;t have an account?{' '}
                 <a
                 href="https://outlook.office.com/mail/deeplink/compose?to=support@torus.tech"

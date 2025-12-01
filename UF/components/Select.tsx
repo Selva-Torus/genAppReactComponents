@@ -251,7 +251,7 @@ export const Select: React.FC<SelectProps> = ({
             </div>
           )}
           <Icon
-            data={isOpen ? "FaAngleUp" : "FaAngleDown"}
+            data={isOpen ? "chevron-up" : "chevron-down"}
             size={16}
             className="transition-transform"
           />

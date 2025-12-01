@@ -18,8 +18,8 @@ const ParentComponent = () => {
   const [nodeData, setNodeData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [app, setApp] = useState({
-    code: 'oprmatrix',
-    name: 'oprmatrix'
+    code: 'A001',
+    name: 'application'
   })
   const [appGroup, setappGroup] = useState({
     code: 'AG001',
@@ -33,7 +33,7 @@ const ParentComponent = () => {
   const [ fabrics , setFabrics ] = useState<Array<string>>([])
   const [jsonViewerData, setJsonViewerData] = useState({})
   const router = useRouter()
-  let landingScreen:string = 'User Screen';
+  let landingScreen:string = 'CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1';
   const encryptionFlagApp: boolean = false;    
   const [jsonData, setJsonData] = useState({
     data: [],
@@ -51,38 +51,34 @@ const ParentComponent = () => {
     AIF: ['AIFD'],
     CDF: ['DPD', 'IFD']
   };
-
   const getDate = (date: any) =>{
     if(!date) return ""
     const { year, month, day } = date
     return `${year}-${month}-${day}`
   }
-
   let payload:any = useMemo(() => {
-   
-//     return {
-//     "tenant": "CT299",
-//     "fabric": [],
-//     "appgroup": {
-//         "code": "PH001",
-//         "name": "VPH"
-//     },
-//     "app": {
-//         "code": "VPH001",
-//         "name": "Veracious Payment Hub"
-//     },
-//     "user": [
-//         "perumal"
-//     ],
-//     "FromDate": "2025-11-19",
-//     "ToDate": "2025-11-26",
-//     "page": 1,
-//     "limit": 10,
-//     "searchParam": ""
-// }
-
+  // return {
+  //     "tenant": "CT299",
+  //     "fabric": [],
+  //     "appgroup": {
+  //         "code": "PH001",
+  //         "name": "VPH"
+  //     },
+  //     "app": {
+  //         "code": "VPH001",
+  //         "name": "Veracious Payment Hub"
+  //     },
+  //     "user": [
+  //         "perumal"
+  //     ],
+  //     "FromDate": "2025-11-19",
+  //     "ToDate": "2025-11-26",
+  //     "page": 1,
+  //     "limit": 10,
+  //     "searchParam": ""
+  // }
     return {
-      tenant: 'CT003',
+      tenant: 'CT293',
        fabric: fabrics.length > 0 ? fabrics.flatMap((prefix: any) =>
             suffixes[prefix]
               ? suffixes[prefix].map((suffix: any) => `${prefix}-${suffix}`)
@@ -108,7 +104,7 @@ const ParentComponent = () => {
       console.log('Fetching data...', payload)
       setLoading(true)
       const response = await AxiosService.post(
-        `https://tgadev.toruslowcode.com/ct299/ph001/vph001/v1/api/${activeTab === 'torus' ? 'expLog' : 'prcLog'}`,
+        `/${activeTab === 'torus' ? 'expLog' : 'prcLog'}`,
         payload,
         {
           signal: signal
@@ -280,7 +276,7 @@ const ParentComponent = () => {
   const securityCheck = async () => {
   try {
     const encryptionDpd: string =
-      'CK:CT003:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixtestdpd:AFVK:v1'
+      'CK:CT293:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:A001:AFK:postgresDPD:AFVK:v1'
     const encryptionMethod: string = ''
     let introspect: any
     if (encryptionFlagApp) {

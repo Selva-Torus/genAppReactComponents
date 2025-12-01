@@ -1,4 +1,3 @@
-'use client'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback, useMemo } from 'react'
 import { deleteAllCookies, getCookie } from '@/app/components/cookieMgment'
@@ -151,7 +150,7 @@ const SideNav = ({
     localStorage.clear()
     sessionStorage.clear()
     deleteAllCookies()
-    window.location.href = '/ct003/ag001/oprmatrix/v1'
+    window.location.href = '/ct293/ag001/a001/v1'
   }
 
   const hasMatchingName = (obj: any, input: string): boolean => {
@@ -354,7 +353,8 @@ const SideNav = ({
                       popupProps={{
                         style: {
                           backgroundColor: brandColor,
-                          color: `${isLightColor(brandColor)}`
+                          color: `${isLightColor(brandColor)}`,
+                          position:'fixed'
                         }
                         // placement: `${sidebarStyle !== 'compact' ? 'bottom-end' : 'right-end'}`
                       }}

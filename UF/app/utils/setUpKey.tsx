@@ -53,11 +53,11 @@ export const GetSetupKey = ({ children }: { children: React.ReactNode }) => {
   const [data, setData] = useState<SetupKeyData | null>(null);
   const token:string = getCookie('token'); 
   const encryptionFlagApp: boolean = true;
-  const encryptionDpd: string = "CK:CT003:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixtestdpd:AFVK:v1";
+  const encryptionDpd: string = "CK:CT293:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:A001:AFK:postgresDPD:AFVK:v1";
   const encryptionMethod: string = "";
   const fetchSetupKey = async () => {
     try {
-      let setUpKeyDto:any = {key:"CK:TGA:FNGK:SETUP:FNK:SF:CATK:CT003:AFGK:AG001:AFK:oprmatrix:AFVK:v1:appearance"};
+      let setUpKeyDto:any = {key:"CK:TGA:FNGK:SETUP:FNK:SF:CATK:CT293:AFGK:AG001:AFK:A001:AFVK:v1:appearance"};
       if (encryptionFlagApp) {
         setUpKeyDto["dpdKey"] = encryptionDpd;
         setUpKeyDto["method"] = encryptionMethod;
@@ -102,13 +102,17 @@ export const GetSetupKey = ({ children }: { children: React.ReactNode }) => {
       let normalizedTheme = theme?.toLowerCase();
       console.log('Theme from API:', theme, 'Normalized:', normalizedTheme);
 
-      if (normalizedTheme && (normalizedTheme === 'light' || normalizedTheme === 'dark' || normalizedTheme === 'light-hc' || normalizedTheme === 'dark-hc')) {
-        console.log('Setting theme to:', normalizedTheme);
-        setTheme(normalizedTheme as any);
-      } else {
-        // Default to light theme if no valid theme is provided
-        console.log('No valid theme from API, defaulting to light');
-        setTheme('light');
+      if (token ==='' || (token !== '' && !getCookie('cfg_theme') )) {
+        if (normalizedTheme && (normalizedTheme === 'light' || normalizedTheme === 'dark' || normalizedTheme === 'light-hc' || normalizedTheme === 'dark-hc')) {
+          console.log('Setting theme to:', normalizedTheme);
+          setTheme(normalizedTheme as any);
+        } else {
+          // Default to light theme if no valid theme is provided
+          console.log('No valid theme from API, defaulting to light');
+          setTheme('light');
+        }        
+      }else{
+        setTheme(getCookie('cfg_theme') as any);
       }
 
       // Set language

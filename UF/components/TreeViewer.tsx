@@ -1,5 +1,10 @@
 'use client'
 import React, { useContext, useEffect, useState } from 'react'
+import i18n from '@/app/components/i18n'
+import { useInfoMsg } from '@/app/components/infoMsgHandler'
+import { TotalContext, TotalContextProps } from '@/app/globalContext'
+import { getCookie } from '@/app/components/cookieMgment'
+
 import { Icon } from './Icon'
 import { TextInput } from './TextInput'
 import { TextArea } from './TextArea'
@@ -122,7 +127,7 @@ function createData(
               href={content}
               target='_blank'
               rel='noopener noreferrer'
-              className='block text-blue-700 hover:text-blue-800'
+              className='block'
             >
               {isDynamic ? (
                 <TextInput
@@ -167,18 +172,12 @@ function createData(
                 ? '✅ Boolean'
                 : '📄 Value'}
             </div>
-            {isDynamic ? (
+            {!isDynamic ? (
               <TextInput
                 value={content || ''}
-                onChange={(e) => {
-                  console.log({values : e.target.value , path});
-                  
-                  handleChange(e, path)
-                }}
-                className='w-full '
+                onChange={(e: any) => handleChange(e, path)}
+                className='w-full  text-black'
                 size='s'
-                disabled={false}
-                readOnly={false}
               />
             ) : (
               <Text className='rounded border  px-2 py-1 text-black' variant={'body-1'}>
@@ -549,10 +548,8 @@ const TaiTreeViewer = ({
   return (
     <div
       style={{
-        gridColumn: `1 / 3`,
-        gridRow: `225 / 241`,
-        gap: ``,
         height: `100%`,
+        width: `100%`,
         overflow: 'auto'
       }}
     >
@@ -563,7 +560,7 @@ const TaiTreeViewer = ({
           className='w-full
            rounded-lg border border-gray-200  shadow-lg'
         >
-          <div className='flex h-full flex-col'>
+          <div className='flex h-full w-full flex-col'>
             <div className='rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-4'>
               <h2 className='flex items-center gap-1 text-lg font-semibold text-gray-800'>
                 🌳 Tree View
@@ -591,7 +588,7 @@ const TaiTreeViewer = ({
         </div>
       </div>
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className='mx-auto max-w-2xl rounded-lg  p-8 shadow-2xl'>
+        <div className='mx-auto max-w-2xl rounded-lg  p-2 shadow-2xl'>
           <div className='mb-4 flex items-center gap-2'>
             <div className='flex h-12 w-12 items-center justify-center rounded-full bg-blue-100'>
               <span className='text-2xl'>➕</span>
@@ -609,8 +606,8 @@ const TaiTreeViewer = ({
           </div>
 
           {modalTargetType === 'object' && (
-            <div className='mb-6'>
-              <label className='mb-3 block text-sm font-semibold text-gray-800'>
+            <div className='mb-2'>
+              <label className='mb-2 block text-sm font-semibold text-gray-800'>
                 Property Name
               </label>
               <TextInput
@@ -623,7 +620,7 @@ const TaiTreeViewer = ({
             </div>
           )}
 
-          <div className='mb-6'>
+          <div className='mb-3'>
             <label className='mb-3 block text-sm font-semibold text-gray-800'>
               Value
             </label>
@@ -657,8 +654,8 @@ const TaiTreeViewer = ({
               onChange={(e: any) => setModalValue(e.target.value)}
               placeholder='Enter your JSON value here...'
               className='w-full font-mono'
-              minRows={0}
-              maxRows={0}
+              minRows={4}
+              maxRows={8}
               size={'s'}
             />
           </div>

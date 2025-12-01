@@ -1,5 +1,5 @@
 let data:any ={
-  "oprmatrixtestdpd": {
+  "postgresDPD": {
     "encryptionType": {
       "name": "encryptionType",
       "_type": "select",

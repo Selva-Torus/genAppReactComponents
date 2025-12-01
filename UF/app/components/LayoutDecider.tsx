@@ -39,14 +39,14 @@ const LayoutDecider = ({
   const {borderColor} = useTheme()
   const { brandColor, hoverColor, selectionColor } = branding;
   const encryptionFlagApp: boolean = false;    
-  const encryptionDpd: string = "CK:CT003:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixtestdpd:AFVK:v1";
+  const encryptionDpd: string = "CK:CT293:FNGK:AF:FNK:CDF-DPD:CATK:AG001:AFGK:A001:AFK:postgresDPD:AFVK:v1";
   const encryptionMethod: string = "";
   const logo = ""
-  const appName = "oprmatrix"
+  const appName = "application"
   const toast = useInfoMsg()
   const [loading, setLoading] = useState(true)
   const [updatedNavData, setUpdatedNavData] = useState<MenuItem[]>([])
-  const aKey :string = "CK:TGA:FNGK:BLDC:FNK:DEV:CATK:CT003:AFGK:AG001:AFK:oprmatrix:AFVK:v1:bldc"
+  const aKey :string = "CK:TGA:FNGK:BLDC:FNK:DEV:CATK:CT293:AFGK:AG001:AFK:A001:AFVK:v1:bldc"
   const [rawNavData, setRawNavData] = useState<MenuItem[] | null>(null);
   /*const navData: MenuItem[] = [
   {
@@ -74,15 +74,27 @@ const LayoutDecider = ({
     "icon": "https://cdns3dfsdev.toruslowcode.com/torus/9.1/resources/icons/admin-svgrepo-com.svg"
   },
   {
-    "menuGroupLabel": "testroute",
+    "menuGroupLabel": "screen",
     "screenDetails": [
       {
-        "name": "testroute",
-        "key": "CK:CT003:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:oprmatrix:AFK:oprmatrixUF:AFVK:v1",
+        "name": "screen",
+        "key": "CK:CT293:FNGK:AF:FNK:UF-UFW:CATK:AG001:AFGK:A001:AFK:parentchildindivitualsave:AFVK:v1",
         "allowedAccessProfile": [
-          "Template 1",
-          "User",
-          "Template 3"
+          "Template 1"
+        ],
+        "static": false
+      }
+    ],
+    "items": []
+  },
+  {
+    "menuGroupLabel": "Report",
+    "screenDetails": [
+      {
+        "name": "report",
+        "key": "CK:CT293:FNGK:AF:FNK:UF-UFR:CATK:AG001:AFGK:A001:AFK:report:AFVK:v1",
+        "allowedAccessProfile": [
+          "Template 1"
         ],
         "static": false
       }

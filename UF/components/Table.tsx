@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import { Icon } from "./Icon";
 import { getFontSizeClass, getBorderRadiusClass } from"@/app/utils/branding";
+import { BiSort } from "react-icons/bi";
 
 interface RenderRowActionsProps {
   item: any;
@@ -23,6 +24,7 @@ interface TableProps {
   tableSorting?: boolean;
   isHyperLink?: boolean;
   needLocking?: boolean;
+  emptyMessage?:string | React.ReactNode;
   data?: any[];
   columns?: any[];
   onRowClick?: (row: any) => void;
@@ -51,6 +53,7 @@ export const Table: React.FC<TableProps> = ({
   tableSorting = false,
   isHyperLink = false,
   needLocking = false,
+  emptyMessage = "No Data Available",
   data = [],
   columns = [],
   onRowClick,
@@ -371,8 +374,7 @@ export const Table: React.FC<TableProps> = ({
                   <div className="flex items-center gap-2">
                     {column.name}
                     {tableSorting && sortColumn === column.id && (
-                      <Icon
-                        data={sortDirection === "asc" ? "arrow-up" : "arrow-down"}
+                      <BiSort
                         size={14}
                       />
                     )}
@@ -380,6 +382,7 @@ export const Table: React.FC<TableProps> = ({
                 </th>
               ))}
               {/* Column Visibility Control */}
+              {tableSettings && 
               <th className="">
                 <button
                   onClick={() => setShowColumnModal(!showColumnModal)}
@@ -397,11 +400,24 @@ export const Table: React.FC<TableProps> = ({
                 >
                   <Icon data="FaRegSun" size={16} />
                 </button>
-              </th>
+              </th>}
             </tr>
           </thead>
           <tbody>
-            {displayData.map((row, index) => {
+              {displayData.length === 0 ? (
+                <tr>
+                  <td 
+                    colSpan={visibleColumns.length + (tableSelection ? 1 : 0) + (tableSettings ? 1 : 0)}
+                    className="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
+                  >
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <span className={`${getFontSizeClass(branding.fontSize)} font-medium`}>
+                        {emptyMessage}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ) : (displayData.map((row, index) => {
               const rowId = getRowIdHelper(row, index);
               const isSelected = selectedIds.includes(rowId);
 
@@ -440,23 +456,40 @@ export const Table: React.FC<TableProps> = ({
                       </div>
                     </td>
                   )}
-                  {visibleColumns.map((column) => (
-                    <td
-                      key={column.id}
-                      className={`
-                        px-4 py-3
-                        ${getFontSizeClass(branding.fontSize)}
-                        ${isDark ? "text-gray-300" : "text-gray-700"}
-                        ${isHyperLink ? "text-blue-500 underline" : ""}
-                        ${wordWrap ? "break-words" : "whitespace-nowrap"}
-                      `}
-                    >
-                      {row[column.id]}
-                    </td>
-                  ))}
+                  {visibleColumns.map((column) =>
+                  { 
+                    if(column.type== '__ActionDetails__' && renderRowActions)
+                    {
+                      return(
+                        <td
+                          key={column.id}
+                          >
+                          {renderRowActions({ item: row, index })}
+                          </td>
+                          )
+                        }else {
+                          return(
+                          
+                          <td
+                            key={column.id}
+                            className={`
+                              px-4 py-3
+                              ${getFontSizeClass(branding.fontSize)}
+                              ${isDark ? "text-gray-300" : "text-gray-700"}
+                              ${isHyperLink ? "text-blue-500 underline" : ""}
+                              ${wordWrap ? "break-words" : "whitespace-nowrap"}
+                            `}
+                          >
+                            {row[column.id]}
+                          </td>
+                          )
+                        }
+                  })}
                 </tr>
               );
-            })}
+            }))}
+
+            
           </tbody>
         </table>
       </div>

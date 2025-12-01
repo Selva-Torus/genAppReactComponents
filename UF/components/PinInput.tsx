@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, KeyboardEvent } from "react";
+import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import { Tooltip } from "./Tooltip";
 import { ComponentSize, HeaderPosition, TooltipProps as TooltipPropsType } from "@/types/global";
@@ -8,7 +8,8 @@ import { getFontSizeClass, getBorderRadiusClass } from "@/app/utils/branding";
 
 interface PinInputProps {
   length: number;
-  size: ComponentSize;
+  size?: ComponentSize;
+  value?: string;
   disabled?: boolean;
   placeholder?: string;
   mask?: boolean;
@@ -17,12 +18,14 @@ interface PinInputProps {
   headerText?: string;
   headerPosition?: HeaderPosition;
   onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
   className?: string;
 }
 
 export const PinInput: React.FC<PinInputProps> = ({
   length,
   size,
+  value,
   disabled = false,
   placeholder = "",
   mask = false,
@@ -31,11 +34,31 @@ export const PinInput: React.FC<PinInputProps> = ({
   headerText,
   headerPosition = "top",
   onChange,
+  onBlur,
   className = "",
 }) => {
   const { theme, direction, branding } = useGlobal();
-  const [values, setValues] = useState<string[]>(Array(length).fill(""));
+
+  // Initialize state from value prop or empty array
+  const getInitialValues = () => {
+    if (value) {
+      const chars = value.split('').slice(0, length);
+      return [...chars, ...Array(length - chars.length).fill('')];
+    }
+    return Array(length).fill("");
+  };
+
+  const [values, setValues] = useState<string[]>(getInitialValues());
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Sync internal state with external value prop
+  useEffect(() => {
+    if (value !== undefined) {
+      const chars = value.split('').slice(0, length);
+      const newValues = [...chars, ...Array(length - chars.length).fill('')];
+      setValues(newValues);
+    }
+  }, [value, length]);
 
   const handleChange = (index: number, value: string) => {
     // Only allow numeric input
@@ -116,6 +139,8 @@ export const PinInput: React.FC<PinInputProps> = ({
           onBlur={(e) => {
             e.currentTarget.style.borderColor = isDark ? "#4B5563" : "#D1D5DB";
             e.currentTarget.style.boxShadow = "none";
+            // Call onBlur callback with the complete PIN value
+            onBlur?.(values.join(""));
           }}
         />
       ))}
